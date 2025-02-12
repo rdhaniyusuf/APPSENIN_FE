@@ -51,6 +51,8 @@ const tableColumns = [
   {name: "EMAIL", uid: "email"},
   {name: "CLOCK IN", uid: "clockIn", sortable: true},
   {name: "CLOCK OUT", uid: "clockOut", sortable: true},
+  {name: "DATE", uid: "date"},
+  {name: "TIME", uid: "time"},
   {name: "STATUS", uid: "status", sortable: true},
   {name: "ACTIONS", uid: "actions"},
 ];
@@ -68,6 +70,7 @@ const usersDummy = [
     role: "CEO",
     team: "Management",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
     email: "tony.reichert@example.com",
@@ -78,9 +81,10 @@ const usersDummy = [
     role: "Tech Lead",
     team: "Development",
     status: "wfa",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "zoey.lang@example.com",
   },
   {
@@ -89,9 +93,10 @@ const usersDummy = [
     role: "Sr. Dev",
     team: "Development",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "jane.fisher@example.com",
   },
   {
@@ -100,9 +105,10 @@ const usersDummy = [
     role: "C.M.",
     team: "Marketing",
     status: "submission",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "william.howard@example.com",
   },
   {
@@ -111,9 +117,10 @@ const usersDummy = [
     role: "S. Manager",
     team: "Sales",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "kristen.cooper@example.com",
   },
   {
@@ -121,9 +128,10 @@ const usersDummy = [
     name: "Brian Kim",
     role: "P. Manager",
     team: "Management",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "brian.kim@example.com",
     status: "wfo",
   },
@@ -133,9 +141,9 @@ const usersDummy = [
     role: "Designer",
     team: "Design",
     status: "wfa",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
     email: "michael.hunt@example.com",
   },
   {
@@ -144,9 +152,10 @@ const usersDummy = [
     role: "HR Manager",
     team: "HR",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "samantha.brooks@example.com",
   },
   {
@@ -155,9 +164,10 @@ const usersDummy = [
     role: "F. Manager",
     team: "Finance",
     status: "submission",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "frank.harrison@example.com",
   },
   {
@@ -166,9 +176,10 @@ const usersDummy = [
     role: "Ops Manager",
     team: "Operations",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "emma.adams@example.com",
   },
   {
@@ -177,9 +188,10 @@ const usersDummy = [
     role: "Jr. Dev",
     team: "Development",
     status: "wfo",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "brandon.stevens@example.com",
   },
   {
@@ -188,9 +200,10 @@ const usersDummy = [
     role: "P. Manager",
     team: "Product",
     status: "wfa",
+    time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "megan.richards@example.com",
   },
   {
@@ -201,7 +214,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "oliver.scott@example.com",
   },
   {
@@ -212,7 +225,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "grace.allen@example.com",
   },
   {
@@ -223,7 +236,7 @@ const usersDummy = [
     status: "wfa",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "noah.carter@example.com",
   },
   {
@@ -234,7 +247,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "ava.perez@example.com",
   },
   {
@@ -245,7 +258,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "liam.johnson@example.com",
   },
   {
@@ -256,7 +269,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "sophia.taylor@example.com",
   },
   {
@@ -267,7 +280,7 @@ const usersDummy = [
     status: "wfa",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "lucas.harris@example.com",
   },
   {
@@ -278,7 +291,7 @@ const usersDummy = [
     status: "wfo",
     clockIn: "08:00",
     clockOut: "17:00",
-    
+
     email: "mia.robinson@example.com",
   },
 ];

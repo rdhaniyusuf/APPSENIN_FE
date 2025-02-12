@@ -18,16 +18,26 @@ export default function LoginPage() {
   const [message, setMessage] = React.useState("");
 
   const handleSubmit = async (username: string, password: string) => {
-    const result = await loginUser(username, password);
+    // const result = await loginUser(username, password);
 
-    if (result.success) {
-      console.log("Welcome", username);
-      router.push("/");
-    } else {
-      console.log("Authentication failed:", result.message);
-      setMessage(result.message || "");
-      setShowFailed(true);
-    }
+    // if (result.success) {
+    //   console.log("Welcome", username);
+    //   router.push("/");
+    // } else {
+    //   console.log("Authentication failed:", result.message);
+    //   setMessage(result.message || "");
+    //   setShowFailed(true);
+    // }
+
+     const success = await loginUser(username, password);
+
+     if (success) {
+       router.push("/");
+       console.log("Welcome", username);
+     } else {
+       console.log("Authentication failed");
+       setShowFailed(true);
+     }
   };
 
   React.useEffect(() => {

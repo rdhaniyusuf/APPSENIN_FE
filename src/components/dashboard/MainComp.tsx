@@ -25,6 +25,18 @@ import {
   Tab,
   Tabs,
   Tooltip,
+  useDisclosure,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Checkbox,
+  ModalFooter,
+  CardHeader,
+  Avatar,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@heroui/react";
 import {
   topCardList,
@@ -41,6 +53,10 @@ import {
   RefreshCw,
   UserRoundPen,
   Columns,
+  MailIcon,
+  LockIcon,
+  Link,
+  ClockAlert,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
 const TopCardComp = () => {
@@ -271,7 +287,6 @@ const BottomTable = () => {
                 aria-label="Table Columns"
                 closeOnSelect={false}
                 selectedKeys={statusFilter}
-                selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
               >
                 {statusOptions.map((status) => (
@@ -367,7 +382,7 @@ const BottomTable = () => {
 
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-[382px]", "max-w-3xl"],
+      wrapper: ["max-h-content", "max-w-content"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -430,7 +445,7 @@ const BottomActivity = () => {
 
   return (
     <Tabs
-      className="flex mt-[-6] items-center justify-self-center"
+      className="flex items-center justify-self-center"
       aria-label="Options"
       selectedKey={selected}
       onSelectionChange={(key) => setSelected(key as string)}
@@ -485,12 +500,10 @@ const BottomActivity = () => {
 };
 const TableAbsensi = () => {
   const [filterValue, setFilterValue] = React.useState("");
-  const [] = React.useState<Selection>(
-    new Set([])
-  );
+  const [] = React.useState<Selection>(new Set([]));
   const [statusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(17);
-  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "status", "actions"];
+  const [rowsPerPage, setRowsPerPage] = React.useState(13);
+  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "time", "status", "actions"];
   const [visibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS_ABSEN)
   );
@@ -561,7 +574,7 @@ const TableAbsensi = () => {
       case "status":
         return (
           <Chip
-            className="capitalize border-none gap-1 text-default-600"
+            className="capitalize border-none text-default-600"
             color={statusColorMap[user.status]}
             size="sm"
             variant="dot"
@@ -571,17 +584,14 @@ const TableAbsensi = () => {
         );
       case "actions":
         return (
-          <div className="relative flex justify-center gap-2">
-            <button>
-              <Signature className="text-default-400" />
-            </button>
+          <div className="justify-center">
+            <PopMesssage />
           </div>
         );
       default:
         return cellValue;
     }
   }, []);
-
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
@@ -589,7 +599,6 @@ const TableAbsensi = () => {
     },
     []
   );
-
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
@@ -598,7 +607,6 @@ const TableAbsensi = () => {
       setFilterValue("");
     }
   }, []);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
@@ -639,10 +647,9 @@ const TableAbsensi = () => {
       </div>
     );
   }, [filterValue, onSearchChange, onRowsPerPageChange]);
-
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="px-2 flex justify-between items-center">
+      <div className="px-2 flex justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -659,10 +666,9 @@ const TableAbsensi = () => {
       </div>
     );
   }, [page, pages, hasSearchFilter]);
-
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-content", "max-w-3xl"],
+      wrapper: ["max-h-conten", "max-w-content"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -674,7 +680,6 @@ const TableAbsensi = () => {
     }),
     []
   );
-
   return (
     <Table
       isCompact
@@ -683,7 +688,6 @@ const TableAbsensi = () => {
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={classNames}
-      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
@@ -710,14 +714,89 @@ const TableAbsensi = () => {
         )}
       </TableBody>
     </Table>
+  );
+};
+// Modal messager user
+const ModalMessage = () => {
+  const [messageSend, diretTo] = React.useState(false);
+  const item = usersDummy[0];
+
+  return (
+    <>
+      <Card className="w-[300px] border-none bg-transparent" shadow="none">
+        <CardHeader className="justify-between">
+          <div className="flex gap-3">
+            <Avatar isBordered radius="full" size="md" src={item.role} />
+            <div className="flex flex-col items-start justify-center">
+              <h4 className="text-small font-semibold leading-none text-default-600">
+                {item.name}
+              </h4>
+              <h5 className="text-small tracking-tight text-default-500">
+                {item.team}
+              </h5>
+            </div>
+          </div>
+          <Button
+            className={
+              messageSend
+                ? "bg-transparent text-foreground border-default-200"
+                : ""
+            }
+            color="primary"
+            radius="full"
+            size="sm"
+            variant={messageSend ? "bordered" : "solid"}
+            onPress={() => diretTo(!messageSend)}
+          >
+            {messageSend ? "Direct to" : "Message"}
+          </Button>
+        </CardHeader>
+        <CardBody key="item" className="px-3 py-0">
+          <p className="text-small pl-px">On Time : {item.clockIn}</p>
+          <p className="text-small pl-px">
+            Over Time : {item.time} <ClockAlert />
+          </p>
+          <p className="flex justify-end"></p>
+        </CardBody>
+        <CardFooter className="flex gap-3">
+          <div className="flex gap-1">
+            <p className="text-default-500 text-small">Date : 12 Februari 2025</p>
+          </div>
+          <div className="flex gap-1">
+            <p className=" text-default-500 text-small">{item.status}</p>
+          </div>
+        </CardFooter>
+      </Card>
+    </>
+  );
+};
+const PopMesssage = () => {
+  return (
+    <Popover showArrow placement="left-start">
+      <PopoverTrigger>
+        <Button
+          className="border-none"
+          color="secondary"
+          variant="light"
+          radius="full"
+          size="sm"
+        >
+          <UserRoundPen className="text-default-400" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="p-1">
+        <ModalMessage />
+      </PopoverContent>
+    </Popover>
   );
 };
 const TableCuti = () => {
   const [filterValue, setFilterValue] = React.useState("");
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(17);
-  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "status", "actions"];
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [] = React.useState<Selection>(new Set([]));
+  const [statusFilter] = React.useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = React.useState(13);
+  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "time", "status", "actions"];
+  const [visibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS_ABSEN)
   );
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -787,7 +866,7 @@ const TableCuti = () => {
       case "status":
         return (
           <Chip
-            className="capitalize border-none gap-1 text-default-600"
+            className="capitalize border-none text-default-600"
             color={statusColorMap[user.status]}
             size="sm"
             variant="dot"
@@ -797,17 +876,14 @@ const TableCuti = () => {
         );
       case "actions":
         return (
-          <div className="relative flex justify-center gap-2">
-            <button>
-              <Signature className="text-default-400" />
-            </button>
+          <div className="justify-center">
+            <ModalApprovalCuti />
           </div>
         );
       default:
         return cellValue;
     }
   }, []);
-
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
@@ -815,7 +891,6 @@ const TableCuti = () => {
     },
     []
   );
-
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
@@ -824,7 +899,6 @@ const TableCuti = () => {
       setFilterValue("");
     }
   }, []);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
@@ -844,31 +918,6 @@ const TableCuti = () => {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button
-                                    endContent={<ChevronDownIcon className="text-small" />}
-                                    size="sm"
-                                    variant="flat"
-                                >
-                                    Status
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={statusFilter}
-                                selectionMode="multiple"
-                                onSelectionChange={setStatusFilter}
-                            >
-                                {statusOptions.map((status) => (
-                                    <DropdownItem key={status.uid} className="capitalize">
-                                        {capitalize(status.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown> */}
             <div className="flex-wrap justify-between items-center">
               <span className="text-default-400 text-small">
                 {/* Total {use?.length} users */}
@@ -890,10 +939,9 @@ const TableCuti = () => {
       </div>
     );
   }, [filterValue, onSearchChange, onRowsPerPageChange]);
-
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="px-2 flex justify-between items-center">
+      <div className="px-2 flex justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -906,16 +954,13 @@ const TableCuti = () => {
           variant="light"
           onChange={setPage}
         />
-        <span className="text-small text-default-400">
-         
-        </span>
+        <span className="text-small text-default-400"></span>
       </div>
     );
-  }, [ page, pages, hasSearchFilter]);
-
+  }, [page, pages, hasSearchFilter]);
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-content", "max-w-3xl"],
+      wrapper: ["max-h-conten", "max-w-content"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -927,7 +972,6 @@ const TableCuti = () => {
     }),
     []
   );
-
   return (
     <Table
       isCompact
@@ -936,7 +980,6 @@ const TableCuti = () => {
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={classNames}
-      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
@@ -963,17 +1006,82 @@ const TableCuti = () => {
         )}
       </TableBody>
     </Table>
+  );
+};
+// Modal Form Untuk Approval Cuti
+const ModalApprovalCuti = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isFollowed, setIsFollowed] = React.useState(false);
+  return (
+    <>
+      <Button
+        className="border-none"
+        color="secondary"
+        variant="light"
+        radius="full"
+        onPress={onOpen}
+        size="sm"
+      >
+        <UserRoundPen className="text-default-400" />
+      </Button>
+      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalBody>
+                <Input
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Email"
+                  placeholder="Enter your email"
+                  variant="bordered"
+                />
+                <Input
+                  endContent={
+                    <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                  variant="bordered"
+                />
+                <div className="flex py-2 px-1 justify-between">
+                  <Checkbox
+                    classNames={{
+                      label: "text-small",
+                    }}
+                  >
+                    Remember me
+                  </Checkbox>
+                  <Link color="primary" href="#" size="sm">
+                    Forgot password?
+                  </Link>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Sign in
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 const TableLembur = () => {
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
-  );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(17);
-  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "status", "actions"];
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [] = React.useState<Selection>(new Set([]));
+  const [statusFilter] = React.useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = React.useState(13);
+  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "time", "status", "actions"];
+  const [visibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS_ABSEN)
   );
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -1043,7 +1151,7 @@ const TableLembur = () => {
       case "status":
         return (
           <Chip
-            className="capitalize border-none gap-1 text-default-600"
+            className="capitalize border-none text-default-600"
             color={statusColorMap[user.status]}
             size="sm"
             variant="dot"
@@ -1053,17 +1161,14 @@ const TableLembur = () => {
         );
       case "actions":
         return (
-          <div className="relative flex justify-center gap-2">
-            <button>
-              <Signature className="text-default-400" />
-            </button>
+          <div className="justify-center">
+            <ModalApprovalLembur />
           </div>
         );
       default:
         return cellValue;
     }
   }, []);
-
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
@@ -1071,7 +1176,6 @@ const TableLembur = () => {
     },
     []
   );
-
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
@@ -1080,7 +1184,6 @@ const TableLembur = () => {
       setFilterValue("");
     }
   }, []);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
@@ -1100,31 +1203,6 @@ const TableLembur = () => {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button
-                                    endContent={<ChevronDownIcon className="text-small" />}
-                                    size="sm"
-                                    variant="flat"
-                                >
-                                    Status
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={statusFilter}
-                                selectionMode="multiple"
-                                onSelectionChange={setStatusFilter}
-                            >
-                                {statusOptions.map((status) => (
-                                    <DropdownItem key={status.uid} className="capitalize">
-                                        {capitalize(status.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown> */}
             <div className="flex-wrap justify-between items-center">
               <span className="text-default-400 text-small">
                 {/* Total {use?.length} users */}
@@ -1146,10 +1224,9 @@ const TableLembur = () => {
       </div>
     );
   }, [filterValue, onSearchChange, onRowsPerPageChange]);
-
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="px-2 flex justify-between items-center">
+      <div className="px-2 flex justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -1162,18 +1239,13 @@ const TableLembur = () => {
           variant="light"
           onChange={setPage}
         />
-        <span className="text-small text-default-400">
-          {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${items.length} selected`}
-        </span>
+        <span className="text-small text-default-400"></span>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
+  }, [page, pages, hasSearchFilter]);
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-content", "max-w-3xl"],
+      wrapper: ["max-h-conten", "max-w-content"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -1185,7 +1257,6 @@ const TableLembur = () => {
     }),
     []
   );
-
   return (
     <Table
       isCompact
@@ -1194,12 +1265,9 @@ const TableLembur = () => {
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
@@ -1225,6 +1293,73 @@ const TableLembur = () => {
     </Table>
   );
 };
+// Modal Daftar User Yang Mengajukan Lemburan
+const ModalApprovalLembur = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  return (
+    <>
+      <Button
+        className="border-none"
+        color="secondary"
+        variant="light"
+        radius="full"
+        onPress={onOpen}
+        size="sm"
+      >
+        <UserRoundPen className="text-default-400" />
+      </Button>
+      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalBody>
+                <Input
+                  endContent={
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Email"
+                  placeholder="Enter your email"
+                  variant="bordered"
+                />
+                <Input
+                  endContent={
+                    <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                  variant="bordered"
+                />
+                <div className="flex py-2 px-1 justify-between">
+                  <Checkbox
+                    classNames={{
+                      label: "text-small",
+                    }}
+                  >
+                    Remember me
+                  </Checkbox>
+                  <Link color="primary" href="#" size="sm">
+                    Forgot password?
+                  </Link>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Sign in
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
 export {
   TopCardComp,
   BottomTable,
@@ -1232,4 +1367,7 @@ export {
   BottomActivity,
   TableCuti,
   TableLembur,
+  ModalMessage,
+  ModalApprovalCuti,
+  ModalApprovalLembur,
 };
