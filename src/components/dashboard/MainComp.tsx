@@ -1102,6 +1102,20 @@ const ModalApprovalCuti = () => {
                         type="email"
                         variant="bordered"
                       />
+
+                      <Button
+                        className="border-none"
+                        color="secondary"
+                        variant="light"
+                        radius="full"
+                        onPress={onOpen}
+                        size="sm"
+                      >
+                        <Tooltip
+                        content="Digi-sign">
+                          <Signature />
+                        </Tooltip>
+                      </Button>
                     </CardFooter>
                   </Card>
                 </div>
