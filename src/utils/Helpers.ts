@@ -296,4 +296,14 @@ const usersDummy = [
   },
 ];
 
-export { menuItems, topCardList, tableColumns, statusOptions,usersDummy};
+const columnAct = [
+  { name: "NAME/NIP", uid: "name" },
+  { name: "TANGGAL", uid: "tanggal" },
+  { name: "CLOCK-IN", uid: "clockin" },
+  { name: "CLOCK-OUT", uid: "clockout" },
+  { name: "KETERANGAN", uid: "role" },
+  { name: "STATUS", uid: "status" },
+  { name: "ACTIONS", uid: "actions" },
+];
+
+export { menuItems, topCardList, tableColumns, statusOptions,usersDummy, columnAct};
