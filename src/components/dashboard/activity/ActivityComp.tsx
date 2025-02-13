@@ -26,7 +26,7 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
-import { ClockArrowDown, RefreshCw, UserRoundPen } from "lucide-react";
+import { ClockArrowDown, RefreshCw } from "lucide-react";
 import {
   Avatar,
   Card,
@@ -62,7 +62,7 @@ const TopActivityTabs = () => {
             }
           >
             {/* Table yang belum absen */}
-            <TopActivityComp />
+            <ModalAbsensiComp />
             {/* Button action pengajuan cuti, pengajuan lembur, pengajuan SPD */}
           </Tab>
           <Tab
@@ -100,7 +100,7 @@ const TopActivityTabs = () => {
     </div>
   );
 };
-const TopActivityComp = () => {
+const TableAbsensiComp = () => {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 10;
 
@@ -126,19 +126,19 @@ const TopActivityComp = () => {
       </Button>
     );
   };
-  const AprovalIcon = () => {
-    return (
-      <Button
-        className="border-none"
-        color="secondary"
-        variant="light"
-        radius="md"
-        size="sm"
-      >
-        <UserRoundPen className="text-defaul-400" />
-      </Button>
-    );
-  };
+  // const AprovalIcon = () => {
+  //   return (
+  //     <Button
+  //       className="border-none"
+  //       color="secondary"
+  //       variant="light"
+  //       radius="md"
+  //       size="sm"
+  //     >
+  //       <UserRoundPen className="text-defaul-400" />
+  //     </Button>
+  //   );
+  // };
   type user = (typeof usersDummy)[0];
   const renderCell = React.useCallback((user: user, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof user];
@@ -179,16 +179,16 @@ const TopActivityComp = () => {
       case "actions":
         return (
           <div className="flex justify-center gap-[-10]">
-            <Tooltip content="Refresh">
+            <Tooltip content="Synch Presence">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <RefreshIcon />
               </span>
             </Tooltip>
-            <Tooltip content="Edit User">
+            {/* <Tooltip content="Edit User">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <AprovalIcon />
               </span>
-            </Tooltip>
+            </Tooltip> */}
           </div>
         );
       default:
@@ -235,7 +235,7 @@ const TopActivityComp = () => {
     </Table>
   );
 };
-const TopModalComp = () => {
+const ModalAbsensiComp = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="flex mb-5 mt-5 justify-start flex-col gap-4">
@@ -381,7 +381,7 @@ const TopModalComp = () => {
     </div>
   );
 };
-const TopCutiPop = ({}) => {
+const PopCutiComp = ({}) => {
   const UserTwitterCard = () => {
     const [isFollowed, setIsFollowed] = React.useState(false);
     return (
@@ -460,4 +460,4 @@ const TopCutiPop = ({}) => {
     );
   };
 };
-export { TopActivityComp, TopModalComp, TopCutiPop, TopActivityTabs };
+export { TableAbsensiComp, ModalAbsensiComp, PopCutiComp, TopActivityTabs };

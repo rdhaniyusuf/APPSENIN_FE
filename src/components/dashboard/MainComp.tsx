@@ -42,6 +42,7 @@ import {
   DateInput,
   TimeInput,
 } from "@heroui/react";
+import { getLocalTimeZone, Time, today } from "@internationalized/date";
 import {
   topCardList,
   tableColumns,
@@ -64,6 +65,7 @@ import {
   ClipboardPen,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
+
 const TopCardComp = () => {
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
@@ -445,6 +447,7 @@ const BottomTable = () => {
     </Table>
   );
 };
+//tampilan tabel utama
 const BottomActivity = () => {
   const [selected, setSelected] = React.useState("absence");
 
@@ -503,6 +506,7 @@ const BottomActivity = () => {
     </Tabs>
   );
 };
+//tampilan daftar user yang belum absen
 const TableAbsensi = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [] = React.useState<Selection>(new Set([]));
@@ -800,6 +804,7 @@ const PopMesssage = () => {
     </Popover>
   );
 };
+// Data tabel permintaan cuti user di dashboar TL
 const TableCuti = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [] = React.useState<Selection>(new Set([]));
@@ -1019,8 +1024,6 @@ const TableCuti = () => {
   );
 };
 // Modal Form Untuk Approval Cuti
-import { getLocalTimeZone, Time, today } from "@internationalized/date";
-
 const ModalApprovalCuti = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
