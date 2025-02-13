@@ -54,6 +54,7 @@ const tableColumns = [
   {name: "DATE", uid: "date"},
   {name: "TIME", uid: "time"},
   {name: "STATUS", uid: "status", sortable: true},
+  {name: "KETERANGAN", uid: "ket", sortable: true},
   {name: "ACTIONS", uid: "actions"},
 ];
 

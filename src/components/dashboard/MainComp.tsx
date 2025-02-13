@@ -760,7 +760,9 @@ const ModalMessage = () => {
         </CardBody>
         <CardFooter className="flex gap-3">
           <div className="flex gap-1">
-            <p className="text-default-500 text-small">Date : 12 Februari 2025</p>
+            <p className="text-default-500 text-small">
+              Date : 12 Februari 2025
+            </p>
           </div>
           <div className="flex gap-1">
             <p className=" text-default-500 text-small">{item.status}</p>
@@ -770,6 +772,7 @@ const ModalMessage = () => {
     </>
   );
 };
+//trigger ke Whatsapp untuk kirim pesan ke nomor telepon user
 const PopMesssage = () => {
   return (
     <Popover showArrow placement="left-start">
@@ -781,7 +784,9 @@ const PopMesssage = () => {
           radius="full"
           size="sm"
         >
-          <UserRoundPen className="text-default-400" />
+          <Tooltip content="Report User">
+            <UserRoundPen className="text-default-400" />
+          </Tooltip>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-1">
@@ -794,8 +799,8 @@ const TableCuti = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [] = React.useState<Selection>(new Set([]));
   const [statusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(13);
-  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "time", "status", "actions"];
+  const [rowsPerPage, setRowsPerPage] = React.useState(11);
+  const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "date", "ket", "actions"];
   const [visibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS_ABSEN)
   );
@@ -911,7 +916,7 @@ const TableCuti = () => {
             }}
             placeholder="Search by name..."
             size="sm"
-            startContent={<SearchIcon className="text-default-300" />}
+            startContent={<Signature className="text-default-300" />}
             value={filterValue}
             variant="bordered"
             onClear={() => setFilterValue("")}
@@ -930,7 +935,7 @@ const TableCuti = () => {
                 >
                   <option value="10">10</option>
                   <option value="20">20</option>
-                  <option value="30">30</option>
+                  <option value="50">50</option>
                 </select>
               </label>
             </div>
@@ -941,7 +946,7 @@ const TableCuti = () => {
   }, [filterValue, onSearchChange, onRowsPerPageChange]);
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="px-2 flex justify-end items-center">
+      <div className="flex mt-5 justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -960,7 +965,7 @@ const TableCuti = () => {
   }, [page, pages, hasSearchFilter]);
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-conten", "max-w-content"],
+      wrapper: ["max-h-[270px]", "max-w-auto", "overflow-hidden"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -1022,7 +1027,9 @@ const ModalApprovalCuti = () => {
         onPress={onOpen}
         size="sm"
       >
-        <UserRoundPen className="text-default-400" />
+        <Tooltip content="View & Sign">
+          <Signature className="text-default-400" />
+        </Tooltip>
       </Button>
       <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
         <ModalContent>
@@ -1306,7 +1313,9 @@ const ModalApprovalLembur = () => {
         onPress={onOpen}
         size="sm"
       >
-        <UserRoundPen className="text-default-400" />
+        <Tooltip content="Report">
+          <UserRoundPen className="text-default-400" />
+        </Tooltip>
       </Button>
       <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
         <ModalContent>
