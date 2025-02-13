@@ -40,6 +40,7 @@ import {
   Divider,
   user,
   DateInput,
+  TimeInput,
 } from "@heroui/react";
 import {
   topCardList,
@@ -63,8 +64,6 @@ import {
   ClipboardPen,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
-import { CgToday } from "react-icons/cg";
-import { IoToday } from "react-icons/io5";
 const TopCardComp = () => {
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
@@ -674,7 +673,7 @@ const TableAbsensi = () => {
   }, [page, pages, hasSearchFilter]);
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-conten", "max-w-content"],
+      wrapper: ["max-h-content", "max-w-content"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -757,12 +756,12 @@ const ModalMessage = () => {
             {messageSend ? "Direct to" : "Message"}
           </Button>
         </CardHeader>
-        <CardBody key="item" className="px-3 py-0">
-          <p className="text-small pl-px">On Time : {item.clockIn}</p>
-          <p className="text-small pl-px">
-            Over Time : {item.time} <ClockAlert />
-          </p>
-          <p className="flex justify-end"></p>
+        <CardBody key="item" className="flex px-3 py-0">
+          <div className="flex gap-2 items-center">
+            <ClockAlert className="" />
+            <p className="text-small pl-px">Work Time In : {item.clockIn}</p>
+            <p className="text-small pl-px">Work Tim Over : {item.time}</p>
+          </div>
         </CardBody>
         <CardFooter className="flex gap-3">
           <div className="flex gap-1">
@@ -805,7 +804,7 @@ const TableCuti = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [] = React.useState<Selection>(new Set([]));
   const [statusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(11);
+  const [rowsPerPage, setRowsPerPage] = React.useState(13);
   const INITIAL_VISIBLE_COLUMNS_ABSEN = ["name", "date", "ket", "actions"];
   const [visibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS_ABSEN)
@@ -952,7 +951,7 @@ const TableCuti = () => {
   }, [filterValue, onSearchChange, onRowsPerPageChange]);
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="flex mt-5 justify-end items-center">
+      <div className="flex justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -971,7 +970,7 @@ const TableCuti = () => {
   }, [page, pages, hasSearchFilter]);
   const classNames = React.useMemo(
     () => ({
-      wrapper: ["max-h-[270px]", "max-w-auto", "overflow-hidden"],
+      wrapper: ["max-h-content", "max-w-auto", "overflow-hidden"],
       th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
       td: [
         "group-data-[first=true]/tr:first:before:rounded-none",
@@ -1020,7 +1019,7 @@ const TableCuti = () => {
   );
 };
 // Modal Form Untuk Approval Cuti
-import { getLocalTimeZone, today } from "@internationalized/date";
+import { getLocalTimeZone, Time, today } from "@internationalized/date";
 
 const ModalApprovalCuti = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -1111,8 +1110,7 @@ const ModalApprovalCuti = () => {
                         onPress={onOpen}
                         size="sm"
                       >
-                        <Tooltip
-                        content="Digi-sign">
+                        <Tooltip content="Digi-sign">
                           <Signature />
                         </Tooltip>
                       </Button>
@@ -1366,52 +1364,94 @@ const ModalApprovalLembur = () => {
         onPress={onOpen}
         size="sm"
       >
-        <Tooltip content="Previe Task">
-          <ClipboardPen className="text-default-400" />
+        <Tooltip content="View & Sign">
+          <Signature className="text-default-400" />
         </Tooltip>
       </Button>
-      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+      <Modal
+        itemProp="User Testing"
+        isOpen={isOpen}
+        placement="top-center"
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Overtime Request Form
+              </ModalHeader>
               <ModalBody>
-                <Input
-                  endContent={
-                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  label="Email"
-                  placeholder="Enter your email"
-                  variant="bordered"
-                />
-                <Input
-                  endContent={
-                    <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  label="Password"
-                  placeholder="Enter your password"
-                  type="password"
-                  variant="bordered"
-                />
-                <div className="flex py-2 px-1 justify-between">
-                  <Checkbox
-                    classNames={{
-                      label: "text-small",
-                    }}
-                  >
-                    Remember me
-                  </Checkbox>
-                  <Link color="primary" href="#" size="sm">
-                    Forgot password?
-                  </Link>
+                <div className="">
+                  <Card className="max-w-[400px]">
+                    {/* Foto User */}
+                    <CardHeader itemProp="User Testing" className="flex gap-3">
+                      <Image
+                        alt="avatar"
+                        height={40}
+                        radius="sm"
+                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                        width={40}
+                      />
+                      {/* Name & Role */}
+                      <div className="flex flex-col">
+                        <p className="text-md">Bayu Laksmana</p>
+                        <p className="text-small text-default-500">
+                          Technical Support G.I
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody>
+                      {/* <p>Reason for Leave Inpurt</p> */}
+                      <Input
+                        isDisabled
+                        className="max-w-lg"
+                        defaultValue="By Data Inputan User"
+                        label="Reasoning"
+                        type="string"
+                      />
+                    </CardBody>
+                    <Divider />
+                    <CardFooter className="flex-wrap gap-2">
+                      <TimeInput
+                        isDisabled
+                        defaultValue={new Time(11, 45)}
+                        label="Start Overtime"
+                      />
+                      <TimeInput
+                        isDisabled
+                        defaultValue={new Time(11, 45)}
+                        label="End Overtime"
+                      />
+                      <Input
+                        className="bg-white "
+                        label="notes for employees"
+                        placeholder="Enter your note"
+                        type="email"
+                        variant="bordered"
+                      />
+                      <Button
+                        className="border-none"
+                        color="secondary"
+                        variant="light"
+                        radius="full"
+                        onPress={onOpen}
+                        size="sm"
+                      >
+                        <Tooltip content="Digi-sign">
+                          <Signature />
+                        </Tooltip>
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Close
+                  Reject
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Sign in
+                  Approve
                 </Button>
               </ModalFooter>
             </>
