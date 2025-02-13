@@ -37,6 +37,9 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Divider,
+  user,
+  DateInput,
 } from "@heroui/react";
 import {
   topCardList,
@@ -57,8 +60,11 @@ import {
   LockIcon,
   Link,
   ClockAlert,
+  ClipboardPen,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
+import { CgToday } from "react-icons/cg";
+import { IoToday } from "react-icons/io5";
 const TopCardComp = () => {
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
@@ -916,7 +922,7 @@ const TableCuti = () => {
             }}
             placeholder="Search by name..."
             size="sm"
-            startContent={<Signature className="text-default-300" />}
+            startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
             variant="bordered"
             onClear={() => setFilterValue("")}
@@ -1014,9 +1020,10 @@ const TableCuti = () => {
   );
 };
 // Modal Form Untuk Approval Cuti
+import { getLocalTimeZone, today } from "@internationalized/date";
+
 const ModalApprovalCuti = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [isFollowed, setIsFollowed] = React.useState(false);
   return (
     <>
       <Button
@@ -1031,48 +1038,80 @@ const ModalApprovalCuti = () => {
           <Signature className="text-default-400" />
         </Tooltip>
       </Button>
-      <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+      <Modal
+        itemProp="User Testing"
+        isOpen={isOpen}
+        placement="top-center"
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Leave Agreement Form
+              </ModalHeader>
               <ModalBody>
-                <Input
-                  endContent={
-                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  label="Email"
-                  placeholder="Enter your email"
-                  variant="bordered"
-                />
-                <Input
-                  endContent={
-                    <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  label="Password"
-                  placeholder="Enter your password"
-                  type="password"
-                  variant="bordered"
-                />
-                <div className="flex py-2 px-1 justify-between">
-                  <Checkbox
-                    classNames={{
-                      label: "text-small",
-                    }}
-                  >
-                    Remember me
-                  </Checkbox>
-                  <Link color="primary" href="#" size="sm">
-                    Forgot password?
-                  </Link>
+                <div className="">
+                  <Card className="max-w-[400px]">
+                    <CardHeader itemProp="User Testing" className="flex gap-3">
+                      <Image
+                        alt="avatar"
+                        height={40}
+                        radius="sm"
+                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                        width={40}
+                      />
+                      <div className="flex flex-col">
+                        <p className="text-md">Bayu Laksmana</p>
+                        <p className="text-small text-default-500">
+                          Technical Support G.I
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                    <CardBody>
+                      {/* <p>Reason for Leave</p> */}
+                      <Input
+                        isDisabled
+                        className="max-w-lg"
+                        defaultValue="By Data Inputan User"
+                        label="Reasoning"
+                        type="string"
+                      />
+                    </CardBody>
+                    <Divider />
+                    <CardFooter className="flex-wrap gap-2">
+                      <DateInput
+                        defaultValue={today(getLocalTimeZone()).subtract({
+                          days: 1,
+                        })}
+                        label="Start Date"
+                        minValue={today(getLocalTimeZone())}
+                      />
+                      <DateInput
+                        defaultValue={today(getLocalTimeZone()).subtract({
+                          days: 1,
+                        })}
+                        label="End Date"
+                        minValue={today(getLocalTimeZone())}
+                      />
+                      <Input
+                        className="bg-white "
+                        label="notes for employees"
+                        placeholder="Enter your note"
+                        type="email"
+                        variant="bordered"
+                      />
+                    </CardFooter>
+                  </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Close
+                  Reject
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Sign in
+                  Approve
                 </Button>
               </ModalFooter>
             </>
@@ -1313,8 +1352,8 @@ const ModalApprovalLembur = () => {
         onPress={onOpen}
         size="sm"
       >
-        <Tooltip content="Report">
-          <UserRoundPen className="text-default-400" />
+        <Tooltip content="Previe Task">
+          <ClipboardPen className="text-default-400" />
         </Tooltip>
       </Button>
       <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
