@@ -796,7 +796,7 @@ const PopMesssage = () => {
           radius="full"
           size="sm"
         >
-          <Tooltip content="Report User">
+          <Tooltip content="">
             <UserRoundPen className="text-default-400" />
           </Tooltip>
         </Button>

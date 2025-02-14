@@ -47,8 +47,14 @@ import {
   DatePicker,
   DateRangePicker,
   DateRangePickerField,
+  ButtonGroup,
 } from "@heroui/react";
-import { getLocalTimeZone, parseDate, Time, today } from "@internationalized/date";
+import {
+  getLocalTimeZone,
+  parseDate,
+  Time,
+  today,
+} from "@internationalized/date";
 import {
   topCardList,
   tableColumns,
@@ -57,7 +63,6 @@ import {
 } from "@/utils/Helpers";
 import {
   SearchIcon,
-  ChevronDownIcon,
   PlusIcon,
   Ellipsis,
   Signature,
@@ -70,8 +75,12 @@ import {
   ClockAlert,
   ClipboardPen,
   FilePen,
+  ChevronDownIcon,
+  FileClock,
+  FileDown,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
+import { clear } from "console";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -94,12 +103,12 @@ const INITIAL_VISIBLE_COLUMNS = [
   "status",
   "actions",
 ];
-
+// Main view in page activity
 const ActiviyPageComp = () => {
   const [selected, setSelected] = React.useState("absence");
   return (
     <Tabs
-      className="flex items-center justify-start  gap-2"
+      className="flex items-center justify-self-center  gap-2"
       aria-label="Options"
       selectedKey={selected}
       onSelectionChange={(key) => setSelected(key as string)}
@@ -150,8 +159,7 @@ const ActiviyPageComp = () => {
     </Tabs>
   );
 };
-
-
+//Table Utama activity
 const TableActivity = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -250,12 +258,13 @@ const TableActivity = () => {
             size="sm"
             variant="dot"
           >
+            {" "}
             {cellValue}
           </Chip>
         );
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
+          <div className="relative flex justify-center items-center gap-2">
             <Dropdown className="bg-background border-1 border-default-200">
               <DropdownTrigger>
                 <Button isIconOnly radius="full" size="sm" variant="light">
@@ -263,9 +272,8 @@ const TableActivity = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
+                <DropdownItem key="view">Correction</DropdownItem>
+                <DropdownItem key="edit">View Status</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -287,12 +295,29 @@ const TableActivity = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <DateRangePicker
+            label="Start Date & End Date"
             className="w-[20%]"
             variant="bordered"
             maxValue={today(getLocalTimeZone())}
-            description="Pilih absen bulanan"
+            description="Pilih tanggal absen bulanan"
           />
+
           <div className="flex gap-3">
+            <Tooltip content="Download as Pdf">
+              <Button className="" size="sm" variant="flat">
+                <FileDown size={20} />
+              </Button>
+            </Tooltip>
+            <Tooltip content="Download as Pdf">
+              <Button className="" size="sm" variant="flat">
+                <FileDown size={20} />
+              </Button>
+            </Tooltip>
+            <Tooltip content="Download as Pdf">
+              <Button className="" size="sm" variant="flat">
+                <FileDown size={20} />
+              </Button>
+            </Tooltip>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -453,6 +478,54 @@ const TableActivity = () => {
         )}
       </TableBody>
     </Table>
+  );
+};
+//Button triger
+const BtnActivity = () => {
+  const [selectedOption] = React.useState(new Set(["merge"]));
+  const descriptionsMap = {
+    merge: "Synch Iconapps",
+    squash: "Edit ",
+    rebase:
+      "All commits from the source branch are added to the destination branch individually.",
+  };
+  const labelsMap = {
+    merge: "Create a merge commit",
+    squash: "Squash and merge",
+    rebase: "Rebase and merge",
+  };
+
+  // Convert the Set to an Array and get the first value.
+  const selectedOptionValue = Array.from(selectedOption)[0];
+
+  return (
+    <ButtonGroup variant="flat">
+      <Button>{labelsMap.merge[0]}</Button>
+      <Dropdown placement="bottom-end">
+        <DropdownTrigger>
+          <Button isIconOnly>
+            <ChevronDownIcon />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          disallowEmptySelection
+          aria-label="Merge options"
+          className="max-w-[300px]"
+          selectedKeys={selectedOption}
+          selectionMode="single"
+        >
+          <DropdownItem key="merge" description={descriptionsMap["merge"]}>
+            {labelsMap["merge"]}
+          </DropdownItem>
+          <DropdownItem key="squash" description={descriptionsMap["squash"]}>
+            {labelsMap["squash"]}
+          </DropdownItem>
+          <DropdownItem key="rebase" description={descriptionsMap["rebase"]}>
+            {labelsMap["rebase"]}
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </ButtonGroup>
   );
 };
 
@@ -878,4 +951,5 @@ export {
   PopMesssage,
   ModalCuti,
   ModalLembur,
+  BtnActivity,
 };
