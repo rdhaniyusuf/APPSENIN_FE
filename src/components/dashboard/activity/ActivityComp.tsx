@@ -303,16 +303,16 @@ const TableActivity = () => {
           />
 
           <div className="flex gap-3">
-            <Tooltip content="Download as Pdf">
+            <Tooltip content="Synch on Iconapps">
+              <Button className="" size="sm" variant="flat">
+                <RefreshCw size={20} />
+              </Button>
+            </Tooltip>
+            {/* <Tooltip content="Download as Pdf">
               <Button className="" size="sm" variant="flat">
                 <FileDown size={20} />
               </Button>
-            </Tooltip>
-            <Tooltip content="Download as Pdf">
-              <Button className="" size="sm" variant="flat">
-                <FileDown size={20} />
-              </Button>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip content="Download as Pdf">
               <Button className="" size="sm" variant="flat">
                 <FileDown size={20} />
