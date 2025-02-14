@@ -1,4 +1,4 @@
-import { Home, Activity, BarChart, Calendar, Settings, HelpCircle, Users, MonitorCog, Clock8,CalendarCheck2,Coffee, Building2 } from 'lucide-react';
+import { Home, Activity, BarChart, Calendar, Settings, HelpCircle, Clock8,CalendarCheck2,Coffee, Building2 } from 'lucide-react';
 
 const menuItems = [
   { name: "Dashboard", icon: Home, href: "/" },
@@ -49,10 +49,10 @@ const tableColumns = [
   {name: "ROLE", uid: "role", sortable: true},
   {name: "TEAM", uid: "team"},
   {name: "EMAIL", uid: "email"},
+  {name: "DAY", uid: "day"},
+  {name: "DATE", uid: "date"},
   {name: "CLOCK IN", uid: "clockIn", sortable: true},
   {name: "CLOCK OUT", uid: "clockOut", sortable: true},
-  {name: "DATE", uid: "date"},
-  {name: "TIME", uid: "time"},
   {name: "STATUS", uid: "status", sortable: true},
   {name: "KETERANGAN", uid: "ket", sortable: true},
   {name: "ACTIONS", uid: "actions"},
