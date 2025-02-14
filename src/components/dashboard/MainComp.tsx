@@ -41,6 +41,9 @@ import {
   user,
   DateInput,
   TimeInput,
+  useCheckbox,
+  VisuallyHidden,
+  tv,
 } from "@heroui/react";
 import { getLocalTimeZone, Time, today } from "@internationalized/date";
 import {
@@ -63,6 +66,7 @@ import {
   Link,
   ClockAlert,
   ClipboardPen,
+  FilePen,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
 
@@ -1025,7 +1029,38 @@ const TableCuti = () => {
 };
 // Modal Form Untuk Approval Cuti
 const ModalApprovalCuti = () => {
+  const [isSelected, setIsSelected] = React.useState(false);
+  const {
+    children,
+    isFocusVisible,
+    getBaseProps,
+    getLabelProps,
+    getInputProps,
+  } = useCheckbox({
+    defaultSelected: true,
+  });
+  const checkbox = tv({
+    slots: {
+      base: "border-default hover:bg-default-200",
+      content: "text-default-500",
+    },
+    variants: {
+      isSelected: {
+        true: {
+          base: "border-primary bg-primary hover:bg-primary-500 hover:border-primary-500",
+          content: "text-primary-foreground pl-1",
+        },
+      },
+      isFocusVisible: {
+        true: {
+          base: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
+        },
+      },
+    },
+  });
+  const styles = checkbox({ isSelected, isFocusVisible });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <>
       <Button
@@ -1037,7 +1072,7 @@ const ModalApprovalCuti = () => {
         size="sm"
       >
         <Tooltip content="View & Sign">
-          <Signature className="text-default-400" />
+          <ClipboardPen className="text-default-400" />
         </Tooltip>
       </Button>
       <Modal
@@ -1084,6 +1119,7 @@ const ModalApprovalCuti = () => {
                     <Divider />
                     <CardFooter className="flex-wrap gap-2">
                       <DateInput
+                      isDisabled
                         defaultValue={today(getLocalTimeZone()).subtract({
                           days: 1,
                         })}
@@ -1091,6 +1127,7 @@ const ModalApprovalCuti = () => {
                         minValue={today(getLocalTimeZone())}
                       />
                       <DateInput
+                      isDisabled
                         defaultValue={today(getLocalTimeZone()).subtract({
                           days: 1,
                         })}
@@ -1104,7 +1141,6 @@ const ModalApprovalCuti = () => {
                         type="email"
                         variant="bordered"
                       />
-
                       <Button
                         className="border-none"
                         color="secondary"
@@ -1114,20 +1150,46 @@ const ModalApprovalCuti = () => {
                         size="sm"
                       >
                         <Tooltip content="Digi-sign">
-                          <Signature />
+                          <Checkbox
+                            isSelected={isSelected}
+                            onValueChange={setIsSelected}
+                          ></Checkbox>
                         </Tooltip>
+                        <p className="text-default-500">
+                          Sign Approval must be checklist
+                        </p>
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Chip color="danger" variant="flat" onPress={onClose}>
                   Reject
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Approve
-                </Button>
+                </Chip>
+                <label {...getBaseProps()}>
+                  <VisuallyHidden>
+                    <input {...getInputProps()} />
+                  </VisuallyHidden>
+                  <Chip
+                    classNames={{
+                      base: styles.base(),
+                      content: styles.content(),
+                    }}
+                    color="primary"
+                    startContent={
+                      isSelected ? <Signature className="ml-1" /> : null
+                    }
+                    variant="faded"
+                    {...getLabelProps()}
+                  >
+                    {children
+                      ? children
+                      : isSelected
+                      ? "Approval"
+                      : "Didn't Sign"}
+                  </Chip>
+                </label>
               </ModalFooter>
             </>
           )}
@@ -1356,6 +1418,36 @@ const TableLembur = () => {
 };
 // Modal Daftar User Yang Mengajukan Lemburan
 const ModalApprovalLembur = () => {
+  const [isSelected, setIsSelected] = React.useState(false);
+  const {
+    children,
+    isFocusVisible,
+    getBaseProps,
+    getLabelProps,
+    getInputProps,
+  } = useCheckbox({
+    defaultSelected: true,
+  });
+  const checkbox = tv({
+    slots: {
+      base: "border-default hover:bg-default-200",
+      content: "text-default-500",
+    },
+    variants: {
+      isSelected: {
+        true: {
+          base: "border-primary bg-primary hover:bg-primary-500 hover:border-primary-500",
+          content: "text-primary-foreground pl-1",
+        },
+      },
+      isFocusVisible: {
+        true: {
+          base: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
+        },
+      },
+    },
+  });
+  const styles = checkbox({ isSelected, isFocusVisible });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
@@ -1368,7 +1460,7 @@ const ModalApprovalLembur = () => {
         size="sm"
       >
         <Tooltip content="View & Sign">
-          <Signature className="text-default-400" />
+          <FilePen className="text-default-400" />
         </Tooltip>
       </Button>
       <Modal
@@ -1417,12 +1509,10 @@ const ModalApprovalLembur = () => {
                     <Divider />
                     <CardFooter className="flex-wrap gap-2">
                       <TimeInput
-                        isDisabled
                         defaultValue={new Time(11, 45)}
                         label="Start Overtime"
                       />
                       <TimeInput
-                        isDisabled
                         defaultValue={new Time(11, 45)}
                         label="End Overtime"
                       />
@@ -1442,20 +1532,46 @@ const ModalApprovalLembur = () => {
                         size="sm"
                       >
                         <Tooltip content="Digi-sign">
-                          <Signature />
+                          <Checkbox
+                            isSelected={isSelected}
+                            onValueChange={setIsSelected}
+                          ></Checkbox>
                         </Tooltip>
+                        <p className="text-default-500">
+                          Sign Approval must be checklist
+                        </p>
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Chip color="danger" variant="flat" onPress={onClose}>
                   Reject
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Approve
-                </Button>
+                </Chip>
+                <label {...getBaseProps()}>
+                  <VisuallyHidden>
+                    <input {...getInputProps()} />
+                  </VisuallyHidden>
+                  <Chip
+                    classNames={{
+                      base: styles.base(),
+                      content: styles.content(),
+                    }}
+                    color="primary"
+                    startContent={
+                      isSelected ? <Signature className="ml-1" /> : null
+                    }
+                    variant="faded"
+                    {...getLabelProps()}
+                  >
+                    {children
+                      ? children
+                      : isSelected
+                      ? "Approval"
+                      : "Didn't Sign"}
+                  </Chip>
+                </label>
               </ModalFooter>
             </>
           )}
