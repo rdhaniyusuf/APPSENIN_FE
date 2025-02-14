@@ -454,7 +454,6 @@ const BottomTable = () => {
 //tampilan tabel utama
 const BottomActivity = () => {
   const [selected, setSelected] = React.useState("absence");
-
   return (
     <Tabs
       className="flex items-center justify-self-center"
@@ -1592,3 +1591,4 @@ export {
   ModalApprovalCuti,
   ModalApprovalLembur,
 };
+
