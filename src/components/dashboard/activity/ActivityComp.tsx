@@ -95,15 +95,6 @@ type user = (typeof usersDummy)[0];
 export function capitalize(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
-const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "day",
-  "date",
-  "clockIn",
-  "clockOut",
-  "status",
-  "actions",
-];
 // Main view in page activity
 const ActiviyPageComp = () => {
   const [selected, setSelected] = React.useState("absence");
@@ -162,6 +153,18 @@ const ActiviyPageComp = () => {
     </Tabs>
   );
 };
+// Deklarasi kolom absen
+const INITIAL_VISIBLE_COLUMNS_ABSENSI = [
+  "name",
+  "day",
+  "date",
+  "schedule",
+  "clockIn",
+  "clockOut",
+  "keterangan",
+  "status",
+  "koreksi",
+];
 //Table Utama activity
 const TableAbsensi = () => {
   const [filterValue, setFilterValue] = React.useState("");
@@ -171,7 +174,7 @@ const TableAbsensi = () => {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS)
+    new Set(INITIAL_VISIBLE_COLUMNS_ABSENSI)
   );
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "nip",
@@ -265,22 +268,6 @@ const TableAbsensi = () => {
             {cellValue}
           </Chip>
         );
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <Ellipsis className="text-default-400 rotate-90" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="card"><ModalMessage/></DropdownItem>
-                <DropdownItem key="profil" href="">Profil</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
       default:
         return cellValue;
     }
@@ -307,8 +294,8 @@ const TableAbsensi = () => {
           />
 
           <div className="flex gap-3">
-            <Tooltip content="Download as Pdf">
-              <Button className="" size="sm" variant="flat">
+            <Tooltip content="Unduh Pdf">
+              <Button className="" size="sm" variant="flat" isIconOnly>
                 <FileDown size={20} />
               </Button>
             </Tooltip>
@@ -445,11 +432,12 @@ const TableAbsensi = () => {
 const INITIAL_VISIBLE_COLUMNS_CUTI = [
   "name",
   "day",
+  "schedule",
   "date",
-  "date",
+  "time",
   "ket",
+  "keterangan",
   "status",
-  "actions",
 ];
 const TableCuti = () => {
   const [filterValue, setFilterValue] = React.useState("");
@@ -553,22 +541,6 @@ const TableCuti = () => {
             {cellValue}
           </Chip>
         );
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <Ellipsis className="text-default-400 rotate-90" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="view">Correction</DropdownItem>
-                <DropdownItem key="edit">View Status</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
       default:
         return cellValue;
     }
@@ -594,8 +566,8 @@ const TableCuti = () => {
             description="Pilih absen bulanan"
           />
           <div className="flex gap-3">
-            <Tooltip content="Download as Pdf">
-              <Button className="" size="sm" variant="flat">
+            <Tooltip content="Unduh Pdf">
+              <Button className="" size="sm" variant="flat" isIconOnly>
                 <FileDown size={20} />
               </Button>
             </Tooltip>
@@ -730,6 +702,15 @@ const TableCuti = () => {
     </Table>
   );
 };
+const INITIAL_VISIBLE_COLUMNS_LEMBUR = [
+  "name",
+  "day",
+  "date",
+  "time1",
+  "time2",
+  "keterangan",
+  "status",
+];
 const TableLembur = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -738,7 +719,7 @@ const TableLembur = () => {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS_CUTI)
+    new Set(INITIAL_VISIBLE_COLUMNS_LEMBUR)
   );
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "nip",
@@ -832,22 +813,6 @@ const TableLembur = () => {
             {cellValue}
           </Chip>
         );
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <Ellipsis className="text-default-400 rotate-90" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="view">Correction</DropdownItem>
-                <DropdownItem key="edit">View Status</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
       default:
         return cellValue;
     }
@@ -874,8 +839,17 @@ const TableLembur = () => {
           />
 
           <div className="flex gap-3">
-            <Tooltip content="Download as Pdf">
-              <Button className="" size="sm" variant="flat">
+            <Button
+              isIconOnly
+              size="sm"
+              variant="flat"
+              endContent={<PlusIcon />}
+              className="bg-foreground text-background"
+            >
+              <ModalLembur />
+            </Button>
+            <Tooltip content="Unduh Pdf">
+              <Button className="" size="sm" variant="flat" isIconOnly>
                 <FileDown size={20} />
               </Button>
             </Tooltip>
@@ -904,14 +878,6 @@ const TableLembur = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              size="sm"
-              variant="flat"
-              endContent={<PlusIcon />}
-              className="bg-foreground text-background"
-            >
-              Tambah
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -1313,8 +1279,8 @@ const ModalLembur = () => {
         onPress={onOpen}
         size="sm"
       >
-        <Tooltip content="View & Sign">
-          <FilePen className="text-default-400" />
+        <Tooltip content="Tambah Lembur">
+          <FilePen className="text-default-400" size={17} />
         </Tooltip>
       </Button>
       <Modal
