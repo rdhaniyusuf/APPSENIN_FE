@@ -119,10 +119,12 @@ export function capitalize(s: string) {
 }
 const INITIAL_VISIBLE_COLUMNS = [
   "name",
+  "role",
+  "day",
+  "date",
   "clockIn",
   "clockOut",
   "status",
-  "actions",
 ];
 const BottomTable = () => {
   const [filterValue, setFilterValue] = React.useState("");
@@ -598,22 +600,8 @@ const TableAbsensi = () => {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            classNames={{
-              base: "w-full sm:max-w-[44%]",
-              inputWrapper: "border-1",
-            }}
-            placeholder="Search by name..."
-            size="sm"
-            startContent={<SearchIcon className="text-default-300" />}
-            value={filterValue}
-            variant="bordered"
-            onClear={() => setFilterValue("")}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
+        <div className="flex justify-end gap-3 items-end">
+          <div className="flex gap-3 mt-3">
             <div className="flex-wrap justify-between items-center">
               <span className="text-default-400 text-small">
                 {/* Total {use?.length} users */}
@@ -634,7 +622,7 @@ const TableAbsensi = () => {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange]);
+  }, [onRowsPerPageChange]);
   const bottomContent = React.useMemo(() => {
     return (
       <div className="px-2 flex justify-end items-center">
@@ -871,7 +859,7 @@ const TableCuti = () => {
       case "actions":
         return (
           <div className="justify-center">
-            <ModalApprovalCuti />
+            <PopMesssageCuti />
           </div>
         );
       default:
@@ -896,22 +884,8 @@ const TableCuti = () => {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            classNames={{
-              base: "w-full sm:max-w-[44%]",
-              inputWrapper: "border-1",
-            }}
-            placeholder="Search by name..."
-            size="sm"
-            startContent={<SearchIcon className="text-default-300" />}
-            value={filterValue}
-            variant="bordered"
-            onClear={() => setFilterValue("")}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
+        <div className="flex justify-end gap-3 items-end">
+          <div className="flex gap-3 mt-3">
             <div className="flex-wrap justify-between items-center">
               <span className="text-default-400 text-small">
                 {/* Total {use?.length} users */}
@@ -932,7 +906,7 @@ const TableCuti = () => {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange]);
+  }, [onRowsPerPageChange]);
   const bottomContent = React.useMemo(() => {
     return (
       <div className="flex justify-end items-center">
@@ -1173,6 +1147,29 @@ const ModalApprovalCuti = () => {
     </>
   );
 };
+const PopMesssageCuti = () => {
+  return (
+    <Popover showArrow placement="left-start">
+      <PopoverTrigger>
+        <Button
+          className="border-none"
+          color="secondary"
+          variant="light"
+          radius="full"
+          size="sm"
+        >
+          <Tooltip content="View">
+            <ClipboardPen className="text-default-400" />
+          </Tooltip>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="p-1">
+        <ModalMessage />
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 const TableLembur = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [] = React.useState<Selection>(new Set([]));
@@ -1285,22 +1282,8 @@ const TableLembur = () => {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 mb-[-10]">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            classNames={{
-              base: "w-full sm:max-w-[44%]",
-              inputWrapper: "border-1",
-            }}
-            placeholder="Search by name..."
-            size="sm"
-            startContent={<SearchIcon className="text-default-300" />}
-            value={filterValue}
-            variant="bordered"
-            onClear={() => setFilterValue("")}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
+        <div className="flex justify-end gap-3 items-end">
+          <div className="flex gap-3 mt-3">
             <div className="flex-wrap justify-between items-center">
               <span className="text-default-400 text-small">
                 {/* Total {use?.length} users */}
@@ -1321,7 +1304,7 @@ const TableLembur = () => {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange]);
+  }, [onRowsPerPageChange]);
   const bottomContent = React.useMemo(() => {
     return (
       <div className="px-2 flex justify-end items-center">

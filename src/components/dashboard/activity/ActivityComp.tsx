@@ -48,12 +48,17 @@ import {
   DateRangePicker,
   DateRangePickerField,
   ButtonGroup,
+  dateInput,
 } from "@heroui/react";
 import {
+  CalendarDate,
+  CalendarDateTime,
   getLocalTimeZone,
+  isEqualMonth,
   parseDate,
   Time,
   today,
+  ZonedDateTime,
 } from "@internationalized/date";
 import {
   topCardList,
@@ -76,6 +81,7 @@ import {
   FilePlus2,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
+import { on } from "events";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -103,7 +109,7 @@ const ActiviyPageComp = () => {
   const [selected, setSelected] = React.useState("absence");
   return (
     <Tabs
-      className="flex items-center justify-self-center  gap-2"
+      className="flex items-center justify-self-center gap-2 absolut"
       aria-label="Options"
       selectedKey={selected}
       onSelectionChange={(key) => setSelected(key as string)}
@@ -150,7 +156,7 @@ const ActiviyPageComp = () => {
         }
       >
         {/* Table yang request lembur*/}
-        <TableLembur/>
+        <TableLembur />
         {/* action approval and review */}
       </Tab>
     </Tabs>
@@ -269,8 +275,8 @@ const TableAbsensi = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view"><CorectionIcon/></DropdownItem>
-                <DropdownItem key="edit">View Status</DropdownItem>
+                <DropdownItem key="card"><ModalMessage/></DropdownItem>
+                <DropdownItem key="profil" href="">Profil</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -279,7 +285,6 @@ const TableAbsensi = () => {
         return cellValue;
     }
   }, []);
-
   const onRowsPerPageChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
@@ -292,11 +297,13 @@ const TableAbsensi = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <DateRangePicker
+            onClick={close}
             showMonthAndYearPickers
-            label="Start Date & End Date"
+            label="Start - End Date"
             className="w-[20%]"
             variant="bordered"
-            description="Pilih tanggal absen bulanan"
+            color="default"
+            description="Pilih absen bulanan"
           />
 
           <div className="flex gap-3">
@@ -330,7 +337,6 @@ const TableAbsensi = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-  
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -376,7 +382,6 @@ const TableAbsensi = () => {
       </div>
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
   const classNames = React.useMemo(
     () => ({
       wrapper: ["max-h-content", "max-w-content"],
@@ -391,7 +396,6 @@ const TableAbsensi = () => {
     }),
     []
   );
-
   return (
     <Table
       isCompact
@@ -437,87 +441,6 @@ const TableAbsensi = () => {
     </Table>
   );
 };
-//Button triger
-  const CorectionIcon = () => {
-     return (
-       <Popover showArrow placement="bottom">
-         <PopoverTrigger>
-           <User
-             as="button"
-             avatarProps={{
-               src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-             }}
-             className="transition-transform"
-             description="Product Designer"
-             name="Zoe Lang"
-           />
-         </PopoverTrigger>
-         <PopoverContent className="p-1">
-           <CorectionCard />
-         </PopoverContent>
-       </Popover>
-     );
-  }
-
-   const CorectionCard = () => {
-     const [isFollowed, setIsFollowed] = React.useState(false);
-
-     return (
-       <Card className="max-w-[300px] border-none bg-transparent" shadow="none">
-         <CardHeader className="justify-between">
-           <div className="flex gap-3">
-             <Avatar
-               isBordered
-               radius="full"
-               size="md"
-               src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-             />
-             <div className="flex flex-col items-start justify-center">
-               <h4 className="text-small font-semibold leading-none text-default-600">
-                 Zoey Lang
-               </h4>
-               <h5 className="text-small tracking-tight text-default-500">
-                 @zoeylang
-               </h5>
-             </div>
-           </div>
-           <Button
-             className={
-               isFollowed
-                 ? "bg-transparent text-foreground border-default-200"
-                 : ""
-             }
-             color="primary"
-             radius="full"
-             size="sm"
-             variant={isFollowed ? "bordered" : "solid"}
-             onPress={() => setIsFollowed(!isFollowed)}
-           >
-             {isFollowed ? "Unfollow" : "Follow"}
-           </Button>
-         </CardHeader>
-         <CardBody className="px-3 py-0">
-           <p className="text-small pl-px text-default-500">
-             Full-stack developer, @hero_ui lover she/her
-             <span aria-label="confetti" role="img">
-               🎉
-             </span>
-           </p>
-         </CardBody>
-         <CardFooter className="gap-3">
-           <div className="flex gap-1">
-             <p className="font-semibold text-default-600 text-small">4</p>
-             <p className=" text-default-500 text-small">Following</p>
-           </div>
-           <div className="flex gap-1">
-             <p className="font-semibold text-default-600 text-small">97.1K</p>
-             <p className="text-default-500 text-small">Followers</p>
-           </div>
-         </CardFooter>
-       </Card>
-     );
-   };
-
 //=============================================================================
 const INITIAL_VISIBLE_COLUMNS_CUTI = [
   "name",
@@ -664,11 +587,11 @@ const TableCuti = () => {
         <div className="flex justify-between gap-3 items-end">
           <DateRangePicker
             showMonthAndYearPickers={true}
-            label="Start Date & End Date"
+            label="Start - End Date"
             className="w-[20%]"
             variant="bordered"
             maxValue={today(getLocalTimeZone())}
-            description="Pilih tanggal absen bulanan"
+            description="Pilih absen bulanan"
           />
           <div className="flex gap-3">
             <Tooltip content="Download as Pdf">
@@ -942,12 +865,12 @@ const TableLembur = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <DateRangePicker
-          showMonthAndYearPickers
-            label="Start Date & End Date"
+            showMonthAndYearPickers
+            label="Start - End Date"
             className="w-[20%]"
             variant="bordered"
             maxValue={today(getLocalTimeZone())}
-            description="Pilih tanggal absen bulanan"
+            description="Pilih absen bulanan"
           />
 
           <div className="flex gap-3">
@@ -981,14 +904,14 @@ const TableLembur = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-              <Button
-                size="sm"
-                variant="flat"
-                endContent={<PlusIcon/>}
-                className="bg-foreground text-background"
-              >
-                Tambah
-              </Button>
+            <Button
+              size="sm"
+              variant="flat"
+              endContent={<PlusIcon />}
+              className="bg-foreground text-background"
+            >
+              Tambah
+            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -1097,7 +1020,6 @@ const TableLembur = () => {
 };
 //Button triger
 const BtnCuti = () => {};
-
 //Modal kirim message, belum di panggil
 const ModalMessage = () => {
   const [messageSend, diretTo] = React.useState(false);
@@ -1314,7 +1236,7 @@ const ModalCuti = () => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onPress={onClose}>
+                <Chip color="danger" variant="flat" onClose={onClose}>
                   Reject
                 </Chip>
                 <label {...getBaseProps()}>
@@ -1478,7 +1400,7 @@ const ModalLembur = () => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onPress={onClose}>
+                <Chip color="danger" variant="flat" onClose={onClose}>
                   Reject
                 </Chip>
                 <label {...getBaseProps()}>
@@ -1514,8 +1436,6 @@ const ModalLembur = () => {
 };
 
 export {
-  CorectionIcon,
-  CorectionCard,
   ActiviyPageComp,
   TableAbsensi,
   TableCuti,

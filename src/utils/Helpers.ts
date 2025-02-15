@@ -8,7 +8,7 @@ const menuItems = [
   // { name: "Presence", icon: Calendar, href: "/presence" },
   // { name: "Leaves", icon: Calendar, href: "/leave" },
   // { name: "Schedules", icon: Calendar, href: "/schedule" },
-  // { name: "Help & Feedback", icon: HelpCircle, href: "/help" },
+  { name: "Help & Feedback", icon: HelpCircle, href: "/help" },
 ];
 
 const topCardList = [
@@ -46,16 +46,16 @@ const topCardList = [
 const tableColumns = [
   {name: "NIP", uid: "nip", sortable: true},
   {name: "NAMA", uid: "name", sortable: true},
-  {name: "JABATAN", uid: "role", sortable: true},
-  {name: "TEAM", uid: "team"},
+  {name: "JABATAN", uid: "role", sortable:true},
+  {name: "APLIKASI", uid: "team", sortable: true},
   {name: "EMAIL", uid: "email"},
   {name: "HARI", uid: "day"},
-  {name: "TANGGAL ", uid: "DATE"},
+  {name: "TANGGAL ", uid: "date"},
   {name: "CLOCK IN", uid: "clockIn", sortable: true},
   {name: "CLOCK OUT", uid: "clockOut", sortable: true},
-  {name: "KETERANGAN", uid: "ket", sortable: true},
+  {name: "KETERANGAN", uid: "ket"},
   {name: "STATUS", uid: "status", sortable: true},
-  {name: "ACTIONS", uid: "actions"},
+  {name: "", uid: "actions"},
 ];
 
 const statusOptions = [
