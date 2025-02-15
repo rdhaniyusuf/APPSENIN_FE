@@ -80,8 +80,9 @@ import {
   FileDown,
   FilePlus2,
 } from "lucide-react";
-import React, { SVGProps, useState } from "react";
+import React, { SVGProps, useEffect, useState } from "react";
 import { on } from "events";
+import { getUser } from "@/utils/Auth";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -984,258 +985,6 @@ const TableLembur = () => {
     </Table>
   );
 };
-//Button triger
-const BtnCuti = () => {};
-//Modal kirim message, belum di panggil
-const ModalMessage = () => {
-  const [messageSend, diretTo] = React.useState(false);
-  const item = usersDummy[0];
-
-  return (
-    <>
-      <Card className="w-[300px] border-none bg-transparent" shadow="none">
-        <CardHeader className="justify-between">
-          <div className="flex gap-3">
-            <Avatar isBordered radius="full" size="md" src={item.role} />
-            <div className="flex flex-col items-start justify-center">
-              <h4 className="text-small font-semibold leading-none text-default-600">
-                {item.name}
-              </h4>
-              <h5 className="text-small tracking-tight text-default-500">
-                {item.team}
-              </h5>
-            </div>
-          </div>
-          <Button
-            className={
-              messageSend
-                ? "bg-transparent text-foreground border-default-200"
-                : ""
-            }
-            color="primary"
-            radius="full"
-            size="sm"
-            variant={messageSend ? "bordered" : "solid"}
-            onPress={() => diretTo(!messageSend)}
-          >
-            {messageSend ? "Direct to" : "Message"}
-          </Button>
-        </CardHeader>
-        <CardBody key="item" className="flex px-3 py-0">
-          <div className="flex gap-2 items-center">
-            <ClockAlert className="" />
-            <p className="text-small pl-px">Work Time In : {item.clockIn}</p>
-            <p className="text-small pl-px">Work Tim Over : {item.time}</p>
-          </div>
-        </CardBody>
-        <CardFooter className="flex gap-3">
-          <div className="flex gap-1">
-            <p className="text-default-500 text-small">
-              Date : 12 Februari 2025
-            </p>
-          </div>
-          <div className="flex gap-1">
-            <p className=" text-default-500 text-small">{item.status}</p>
-          </div>
-        </CardFooter>
-      </Card>
-    </>
-  );
-};
-//trigger ke Whatsapp untuk kirim pesan ke nomor telepon user
-const PopMesssage = () => {
-  return (
-    <Popover showArrow placement="left-start">
-      <PopoverTrigger>
-        <Button
-          className="border-none"
-          color="secondary"
-          variant="light"
-          radius="full"
-          size="sm"
-        >
-          <Tooltip content="Report User">
-            <UserRoundPen className="text-default-400" />
-          </Tooltip>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="p-1">
-        <ModalMessage />
-      </PopoverContent>
-    </Popover>
-  );
-};
-// Modal Form Untuk Pengajuan Cuti
-const ModalCuti = () => {
-  const [isSelected, setIsSelected] = React.useState(false);
-  const {
-    children,
-    isFocusVisible,
-    getBaseProps,
-    getLabelProps,
-    getInputProps,
-  } = useCheckbox({
-    defaultSelected: true,
-  });
-  const checkbox = tv({
-    slots: {
-      base: "border-default hover:bg-default-200",
-      content: "text-default-500",
-    },
-    variants: {
-      isSelected: {
-        true: {
-          base: "border-primary bg-primary hover:bg-primary-500 hover:border-primary-500",
-          content: "text-primary-foreground pl-1",
-        },
-      },
-      isFocusVisible: {
-        true: {
-          base: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
-        },
-      },
-    },
-  });
-  const styles = checkbox({ isSelected, isFocusVisible });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  return (
-    <>
-      <Button
-        className="border-none"
-        color="secondary"
-        variant="light"
-        radius="full"
-        onPress={onOpen}
-        size="sm"
-      >
-        <Tooltip content="View & Sign">
-          <ClipboardPen className="text-default-400" />
-        </Tooltip>
-      </Button>
-      <Modal
-        itemProp="User Testing"
-        isOpen={isOpen}
-        placement="top-center"
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Leave Agreement Form
-              </ModalHeader>
-              <ModalBody>
-                <div className="">
-                  <Card className="max-w-[400px]">
-                    <CardHeader itemProp="User Testing" className="flex gap-3">
-                      <Image
-                        alt="avatar"
-                        height={40}
-                        radius="sm"
-                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                        width={40}
-                      />
-                      <div className="flex flex-col">
-                        <p className="text-md">Bayu Laksmana</p>
-                        <p className="text-small text-default-500">
-                          Technical Support G.I
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                      {/* <p>Reason for Leave</p> */}
-                      <Input
-                        isDisabled
-                        className="max-w-lg"
-                        defaultValue="By Data Inputan User"
-                        label="Reasoning"
-                        type="string"
-                      />
-                    </CardBody>
-                    <Divider />
-                    <CardFooter className="flex-wrap gap-2">
-                      <DateInput
-                        isDisabled
-                        defaultValue={today(getLocalTimeZone()).subtract({
-                          days: 1,
-                        })}
-                        label="Start Date"
-                        minValue={today(getLocalTimeZone())}
-                      />
-                      <DateInput
-                        isDisabled
-                        defaultValue={today(getLocalTimeZone()).subtract({
-                          days: 1,
-                        })}
-                        label="End Date"
-                        minValue={today(getLocalTimeZone())}
-                      />
-                      <Input
-                        className="bg-white "
-                        label="notes for employees"
-                        placeholder="Enter your note"
-                        type="email"
-                        variant="bordered"
-                      />
-                      <Button
-                        className="border-none"
-                        color="secondary"
-                        variant="light"
-                        radius="full"
-                        onPress={onOpen}
-                        size="sm"
-                      >
-                        <Tooltip content="Digi-sign">
-                          <Checkbox
-                            isSelected={isSelected}
-                            onValueChange={setIsSelected}
-                          ></Checkbox>
-                        </Tooltip>
-                        <p className="text-default-500">
-                          Sign Approval must be checklist
-                        </p>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Chip color="danger" variant="flat" onClose={onClose}>
-                  Reject
-                </Chip>
-                <label {...getBaseProps()}>
-                  <VisuallyHidden>
-                    <input {...getInputProps()} />
-                  </VisuallyHidden>
-                  <Chip
-                    classNames={{
-                      base: styles.base(),
-                      content: styles.content(),
-                    }}
-                    color="primary"
-                    startContent={
-                      isSelected ? <Signature className="ml-1" /> : null
-                    }
-                    variant="faded"
-                    {...getLabelProps()}
-                  >
-                    {children
-                      ? children
-                      : isSelected
-                      ? "Approval"
-                      : "Didn't Sign"}
-                  </Chip>
-                </label>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
 // Modal Daftar User Yang Mengajukan Lemburan
 const ModalLembur = () => {
   const [isSelected, setIsSelected] = React.useState(false);
@@ -1269,6 +1018,17 @@ const ModalLembur = () => {
   });
   const styles = checkbox({ isSelected, isFocusVisible });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [user, setUser] = useState<user | null>(null);
+  type user = (typeof usersDummy)[0];
+
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set(["kategori lembur"])
+  );
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
+    [selectedKeys]
+  );
   return (
     <>
       <Button
@@ -1293,7 +1053,7 @@ const ModalLembur = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Overtime Request Form
+                Form Pengajuan Lembur
               </ModalHeader>
               <ModalBody>
                 <div className="">
@@ -1309,39 +1069,75 @@ const ModalLembur = () => {
                       />
                       {/* Name & Role */}
                       <div className="flex flex-col">
-                        <p className="text-md">Bayu Laksmana</p>
+                        <p className="text-md">{user?.name}</p>
                         <p className="text-small text-default-500">
-                          Technical Support G.I
+                          {user?.role}
                         </p>
                       </div>
                     </CardHeader>
                     <Divider />
                     <CardBody>
+                      <Dropdown>
+                        <DropdownTrigger>
+                          <Button
+                            className="capitalize gap-2 mb-2"
+                            variant="bordered"
+                          >
+                            {selectedValue}
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          disallowEmptySelection
+                          aria-label="Single selection example"
+                          selectedKeys={selectedKeys}
+                          selectionMode="single"
+                          variant="flat"
+                          onSelectionChange={setSelectedKeys}
+                        >
+                          <DropdownItem key="HARI KERJA">
+                            Hari Kerja
+                          </DropdownItem>
+                          <DropdownItem key="LIBUR">Libur Biasa</DropdownItem>
+                          <DropdownItem key="LIBUR NASIONAL">
+                            Libur Nasional
+                          </DropdownItem>
+                          <DropdownItem key="PIKET HARI RAYA">
+                            Piket Hari Raya
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
                       {/* <p>Reason for Leave Inpurt</p> */}
                       <Input
-                        isDisabled
+                        isRequired
+                        variant="bordered"
                         className="max-w-lg"
-                        defaultValue="By Data Inputan User"
+                        placeholder="..."
+                        labelPlacement="inside"
                         label="Reasoning"
-                        type="string"
+                        type="text"
                       />
                     </CardBody>
                     <Divider />
                     <CardFooter className="flex-wrap gap-2">
                       <TimeInput
+                        variant="bordered"
+                        isRequired
                         defaultValue={new Time(11, 45)}
                         label="Start Overtime"
                       />
                       <TimeInput
+                        variant="bordered"
+                        isRequired
                         defaultValue={new Time(11, 45)}
                         label="End Overtime"
                       />
                       <Input
+                        isDisabled
                         className="bg-white "
-                        label="notes for employees"
-                        placeholder="Enter your note"
-                        type="email"
-                        variant="bordered"
+                        label="Note Team Leader"
+                        placeholder="Catatan"
+                        type="text"
+                        variant="flat"
                       />
                       <Button
                         className="border-none"
@@ -1353,27 +1149,27 @@ const ModalLembur = () => {
                       >
                         <Tooltip content="Digi-sign">
                           <Checkbox
+                            isRequired
                             isSelected={isSelected}
                             onValueChange={setIsSelected}
                           ></Checkbox>
                         </Tooltip>
-                        <p className="text-default-500">
-                          Sign Approval must be checklist
-                        </p>
+                        <p className="text-default-500">TTD Lembur</p>
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onClose={onClose}>
-                  Reject
+                <Chip color="danger" variant="flat" onclose={onClose}>
+                  Batalkan
                 </Chip>
                 <label {...getBaseProps()}>
                   <VisuallyHidden>
                     <input {...getInputProps()} />
                   </VisuallyHidden>
                   <Chip
+                    onClick={close}
                     classNames={{
                       base: styles.base(),
                       content: styles.content(),
@@ -1385,11 +1181,7 @@ const ModalLembur = () => {
                     variant="faded"
                     {...getLabelProps()}
                   >
-                    {children
-                      ? children
-                      : isSelected
-                      ? "Approval"
-                      : "Didn't Sign"}
+                    {children ? children : isSelected ? "Ajukan" : "TTD"}
                   </Chip>
                 </label>
               </ModalFooter>
@@ -1400,16 +1192,11 @@ const ModalLembur = () => {
     </>
   );
 };
-
 export {
   ActiviyPageComp,
   TableAbsensi,
   TableCuti,
   TableLembur,
-  ModalMessage,
-  PopMesssage,
-  ModalCuti,
   ModalLembur,
   // BtnAbsensi,
-  BtnCuti,
 };

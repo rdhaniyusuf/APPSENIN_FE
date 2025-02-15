@@ -1,5 +1,3 @@
-"use client";
-
 import { BottomTable, TopCardComp, BottomActivity } from "@/components/dashboard/MainComp";
 
 export default function HomePage() {

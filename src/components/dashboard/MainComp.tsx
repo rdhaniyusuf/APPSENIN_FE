@@ -976,177 +976,7 @@ const TableCuti = () => {
     </Table>
   );
 };
-// Modal Form Untuk Approval Cuti
-const ModalApprovalCuti = () => {
-  const [isSelected, setIsSelected] = React.useState(false);
-  const {
-    children,
-    isFocusVisible,
-    getBaseProps,
-    getLabelProps,
-    getInputProps,
-  } = useCheckbox({
-    defaultSelected: true,
-  });
-  const checkbox = tv({
-    slots: {
-      base: "border-default hover:bg-default-200",
-      content: "text-default-500",
-    },
-    variants: {
-      isSelected: {
-        true: {
-          base: "border-primary bg-primary hover:bg-primary-500 hover:border-primary-500",
-          content: "text-primary-foreground pl-1",
-        },
-      },
-      isFocusVisible: {
-        true: {
-          base: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
-        },
-      },
-    },
-  });
-  const styles = checkbox({ isSelected, isFocusVisible });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  return (
-    <>
-      <Button
-        className="border-none"
-        color="secondary"
-        variant="light"
-        radius="full"
-        onPress={onOpen}
-        size="sm"
-      >
-        <Tooltip content="View & Sign">
-          <ClipboardPen className="text-default-400" />
-        </Tooltip>
-      </Button>
-      <Modal
-        itemProp="User Testing"
-        isOpen={isOpen}
-        placement="top-center"
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Leave Agreement Form
-              </ModalHeader>
-              <ModalBody>
-                <div className="">
-                  <Card className="max-w-[400px]">
-                    <CardHeader itemProp="User Testing" className="flex gap-3">
-                      <Image
-                        alt="avatar"
-                        height={40}
-                        radius="sm"
-                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                        width={40}
-                      />
-                      <div className="flex flex-col">
-                        <p className="text-md">Bayu Laksmana</p>
-                        <p className="text-small text-default-500">
-                          Technical Support G.I
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody>
-                      {/* <p>Reason for Leave</p> */}
-                      <Input
-                        isDisabled
-                        className="max-w-lg"
-                        defaultValue="By Data Inputan User"
-                        label="Reasoning"
-                        type="string"
-                      />
-                    </CardBody>
-                    <Divider />
-                    <CardFooter className="flex-wrap gap-2">
-                      <DateInput
-                      isDisabled
-                        defaultValue={today(getLocalTimeZone()).subtract({
-                          days: 1,
-                        })}
-                        label="Start Date"
-                        minValue={today(getLocalTimeZone())}
-                      />
-                      <DateInput
-                      isDisabled
-                        defaultValue={today(getLocalTimeZone()).subtract({
-                          days: 1,
-                        })}
-                        label="End Date"
-                        minValue={today(getLocalTimeZone())}
-                      />
-                      <Input
-                        className="bg-white "
-                        label="notes for employees"
-                        placeholder="Enter your note"
-                        type="email"
-                        variant="bordered"
-                      />
-                      <Button
-                        className="border-none"
-                        color="secondary"
-                        variant="light"
-                        radius="full"
-                        onPress={onOpen}
-                        size="sm"
-                      >
-                        <Tooltip content="Digi-sign">
-                          <Checkbox
-                            isSelected={isSelected}
-                            onValueChange={setIsSelected}
-                          ></Checkbox>
-                        </Tooltip>
-                        <p className="text-default-500">
-                          Sign Approval must be checklist
-                        </p>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Chip color="danger" variant="flat">
-                  Reject
-                </Chip>
-                <label {...getBaseProps()}>
-                  <VisuallyHidden>
-                    <input {...getInputProps()} />
-                  </VisuallyHidden>
-                  <Chip
-                    classNames={{
-                      base: styles.base(),
-                      content: styles.content(),
-                    }}
-                    color="primary"
-                    startContent={
-                      isSelected ? <Signature className="ml-1" /> : null
-                    }
-                    variant="faded"
-                    {...getLabelProps()}
-                  >
-                    {children
-                      ? children
-                      : isSelected
-                      ? "Approval"
-                      : "Didn't Sign"}
-                  </Chip>
-                </label>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
 const PopMesssageCuti = () => {
   return (
     <Popover showArrow placement="left-start">
@@ -1406,7 +1236,8 @@ const ModalApprovalLembur = () => {
     },
   });
   const styles = checkbox({ isSelected, isFocusVisible });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [user, setUser] = useState<user | null>(null);
   return (
     <>
       <Button
@@ -1431,7 +1262,7 @@ const ModalApprovalLembur = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Overtime Request Form
+                Form Pengajuan Lembur
               </ModalHeader>
               <ModalBody>
                 <div className="">
@@ -1447,10 +1278,19 @@ const ModalApprovalLembur = () => {
                       />
                       {/* Name & Role */}
                       <div className="flex flex-col">
-                        <p className="text-md">Bayu Laksmana</p>
+                        <p className="text-md">{user?.name}</p>
                         <p className="text-small text-default-500">
-                          Technical Support G.I
+                          {user?.role}
                         </p>
+                      </div>
+                      <div className="flex gap-2 justify-end">
+                        <Input
+                          disabled
+                          variant="flat"
+                          className="w-24"
+                          placeholder="PIKET LEBARAN"
+                          type="text"
+                        />
                       </div>
                     </CardHeader>
                     <Divider />
@@ -1459,7 +1299,7 @@ const ModalApprovalLembur = () => {
                       <Input
                         isDisabled
                         className="max-w-lg"
-                        defaultValue="By Data Inputan User"
+                        defaultValue="..."
                         label="Reasoning"
                         type="string"
                       />
@@ -1475,9 +1315,10 @@ const ModalApprovalLembur = () => {
                         label="End Overtime"
                       />
                       <Input
+                      isRequired
                         className="bg-white "
-                        label="notes for employees"
-                        placeholder="Enter your note"
+                        label="Catatan"
+                        placeholder="..."
                         type="email"
                         variant="bordered"
                       />
@@ -1495,17 +1336,19 @@ const ModalApprovalLembur = () => {
                             onValueChange={setIsSelected}
                           ></Checkbox>
                         </Tooltip>
-                        <p className="text-default-500">
-                          Sign Approval must be checklist
-                        </p>
+                        <p className="text-default-500">TTD Pengajuan Lembur</p>
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onPress={onClose}>
-                  Reject
+                <Chip
+                  color="danger"
+                  variant="flat"
+                  onClick={onOpenChange}
+                >
+                  Batalkan
                 </Chip>
                 <label {...getBaseProps()}>
                   <VisuallyHidden>
@@ -1522,12 +1365,8 @@ const ModalApprovalLembur = () => {
                     }
                     variant="faded"
                     {...getLabelProps()}
-                  >
-                    {children
-                      ? children
-                      : isSelected
-                      ? "Approval"
-                      : "Didn't Sign"}
+                    >
+                    {children ? children : isSelected ? "Menyetujui" : "Menunggu"}
                   </Chip>
                 </label>
               </ModalFooter>
@@ -1547,7 +1386,5 @@ export {
   TableCuti,
   TableLembur,
   ModalMessage,
-  ModalApprovalCuti,
   ModalApprovalLembur,
 };
-
