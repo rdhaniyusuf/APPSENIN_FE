@@ -4,11 +4,11 @@ const menuItems = [
   { name: "Dashboard", icon: Home, href: "/" },
   { name: "Activity", icon: Activity, href: "/activity" },
   { name: "Analytics", icon: BarChart, href: "/analytic" },
-  { name: "Presence", icon: Calendar, href: "/presence" },
-  { name: "Leaves", icon: Calendar, href: "/leave" },
-  { name: "Schedules", icon: Calendar, href: "/schedule" },
   { name: "Settings", icon: Settings, href: "/settings" },
-  { name: "Help & Feedback", icon: HelpCircle, href: "/help" },
+  // { name: "Presence", icon: Calendar, href: "/presence" },
+  // { name: "Leaves", icon: Calendar, href: "/leave" },
+  // { name: "Schedules", icon: Calendar, href: "/schedule" },
+  // { name: "Help & Feedback", icon: HelpCircle, href: "/help" },
 ];
 
 const topCardList = [
@@ -45,16 +45,16 @@ const topCardList = [
 
 const tableColumns = [
   {name: "NIP", uid: "nip", sortable: true},
-  {name: "NAME", uid: "name", sortable: true},
-  {name: "ROLE", uid: "role", sortable: true},
+  {name: "NAMA", uid: "name", sortable: true},
+  {name: "JABATAN", uid: "role", sortable: true},
   {name: "TEAM", uid: "team"},
   {name: "EMAIL", uid: "email"},
-  {name: "DAY", uid: "day"},
-  {name: "DATE", uid: "date"},
+  {name: "HARI", uid: "day"},
+  {name: "TANGGAL ", uid: "DATE"},
   {name: "CLOCK IN", uid: "clockIn", sortable: true},
   {name: "CLOCK OUT", uid: "clockOut", sortable: true},
-  {name: "STATUS", uid: "status", sortable: true},
   {name: "KETERANGAN", uid: "ket", sortable: true},
+  {name: "STATUS", uid: "status", sortable: true},
   {name: "ACTIONS", uid: "actions"},
 ];
 
@@ -63,6 +63,11 @@ const statusOptions = [
   {name: "WFA", uid: "wfa"},
   {name: "Submission", uid: "submission"},
 ];
+const statusOptionsCuti = [
+  {name: "Disetujui", uid: "wfo"},
+  {name: "Tidak disetujui", uid: "wfa"},
+  {name: "Menunggu", uid: "submission"},
+];
 
 const usersDummy = [
   {
@@ -70,7 +75,7 @@ const usersDummy = [
     name: "Tony Reichert",
     role: "CEO",
     team: "Management",
-    status: "wfo",
+    status: "WFH",
     time: "08.16",
     clockIn: "08:00",
     clockOut: "17:00",
@@ -307,4 +312,12 @@ const columnAct = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-export { menuItems, topCardList, tableColumns, statusOptions,usersDummy, columnAct};
+export {
+  menuItems,
+  topCardList,
+  tableColumns,
+  statusOptions,
+  statusOptionsCuti,
+  usersDummy,
+  columnAct,
+};

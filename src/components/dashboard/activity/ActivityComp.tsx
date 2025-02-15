@@ -60,27 +60,22 @@ import {
   tableColumns,
   usersDummy,
   statusOptions,
+  statusOptionsCuti,
 } from "@/utils/Helpers";
 import {
-  SearchIcon,
   PlusIcon,
   Ellipsis,
   Signature,
   RefreshCw,
   UserRoundPen,
-  Columns,
-  MailIcon,
-  LockIcon,
-  Link,
   ClockAlert,
   ClipboardPen,
   FilePen,
   ChevronDownIcon,
-  FileClock,
   FileDown,
+  FilePlus2,
 } from "lucide-react";
 import React, { SVGProps, useState } from "react";
-import { clear } from "console";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -125,7 +120,7 @@ const ActiviyPageComp = () => {
         }
       >
         {/* Table yang belum absen */}
-        <TableActivity />
+        <TableAbsensi />
         {/* action send message */}
       </Tab>
       <Tab
@@ -140,6 +135,7 @@ const ActiviyPageComp = () => {
         }
       >
         {/* Table yang request cuti */}
+        <TableCuti />
         {/* action approval and review */}
       </Tab>
       <Tab
@@ -154,13 +150,14 @@ const ActiviyPageComp = () => {
         }
       >
         {/* Table yang request lembur*/}
+        <TableLembur/>
         {/* action approval and review */}
       </Tab>
     </Tabs>
   );
 };
 //Table Utama activity
-const TableActivity = () => {
+const TableAbsensi = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -272,7 +269,7 @@ const TableActivity = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">Correction</DropdownItem>
+                <DropdownItem key="view"><CorectionIcon/></DropdownItem>
                 <DropdownItem key="edit">View Status</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -295,24 +292,14 @@ const TableActivity = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <DateRangePicker
+            showMonthAndYearPickers
             label="Start Date & End Date"
             className="w-[20%]"
             variant="bordered"
-            maxValue={today(getLocalTimeZone())}
             description="Pilih tanggal absen bulanan"
           />
 
           <div className="flex gap-3">
-            <Tooltip content="Synch on Iconapps">
-              <Button className="" size="sm" variant="flat">
-                <RefreshCw size={20} />
-              </Button>
-            </Tooltip>
-            {/* <Tooltip content="Download as Pdf">
-              <Button className="" size="sm" variant="flat">
-                <FileDown size={20} />
-              </Button>
-            </Tooltip> */}
             <Tooltip content="Download as Pdf">
               <Button className="" size="sm" variant="flat">
                 <FileDown size={20} />
@@ -334,6 +321,7 @@ const TableActivity = () => {
                 closeOnSelect={false}
                 selectedKeys={statusFilter}
                 onSelectionChange={setStatusFilter}
+                selectionMode={"multiple"}
               >
                 {statusOptions.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
@@ -342,38 +330,7 @@ const TableActivity = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {tableColumns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              className="bg-foreground text-background"
-              endContent={<PlusIcon />}
-              size="sm"
-            >
-              Add New
-            </Button>
+  
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -394,7 +351,7 @@ const TableActivity = () => {
         </div>
       </div>
     );
-  }, [statusFilter, visibleColumns, onRowsPerPageChange]);
+  }, [statusFilter, onRowsPerPageChange]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -481,54 +438,667 @@ const TableActivity = () => {
   );
 };
 //Button triger
-const BtnActivity = () => {
-  const [selectedOption] = React.useState(new Set(["merge"]));
-  const descriptionsMap = {
-    merge: "Synch Iconapps",
-    squash: "Edit ",
-    rebase:
-      "All commits from the source branch are added to the destination branch individually.",
-  };
-  const labelsMap = {
-    merge: "Create a merge commit",
-    squash: "Squash and merge",
-    rebase: "Rebase and merge",
-  };
+  const CorectionIcon = () => {
+     return (
+       <Popover showArrow placement="bottom">
+         <PopoverTrigger>
+           <User
+             as="button"
+             avatarProps={{
+               src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+             }}
+             className="transition-transform"
+             description="Product Designer"
+             name="Zoe Lang"
+           />
+         </PopoverTrigger>
+         <PopoverContent className="p-1">
+           <CorectionCard />
+         </PopoverContent>
+       </Popover>
+     );
+  }
 
-  // Convert the Set to an Array and get the first value.
-  const selectedOptionValue = Array.from(selectedOption)[0];
+   const CorectionCard = () => {
+     const [isFollowed, setIsFollowed] = React.useState(false);
+
+     return (
+       <Card className="max-w-[300px] border-none bg-transparent" shadow="none">
+         <CardHeader className="justify-between">
+           <div className="flex gap-3">
+             <Avatar
+               isBordered
+               radius="full"
+               size="md"
+               src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+             />
+             <div className="flex flex-col items-start justify-center">
+               <h4 className="text-small font-semibold leading-none text-default-600">
+                 Zoey Lang
+               </h4>
+               <h5 className="text-small tracking-tight text-default-500">
+                 @zoeylang
+               </h5>
+             </div>
+           </div>
+           <Button
+             className={
+               isFollowed
+                 ? "bg-transparent text-foreground border-default-200"
+                 : ""
+             }
+             color="primary"
+             radius="full"
+             size="sm"
+             variant={isFollowed ? "bordered" : "solid"}
+             onPress={() => setIsFollowed(!isFollowed)}
+           >
+             {isFollowed ? "Unfollow" : "Follow"}
+           </Button>
+         </CardHeader>
+         <CardBody className="px-3 py-0">
+           <p className="text-small pl-px text-default-500">
+             Full-stack developer, @hero_ui lover she/her
+             <span aria-label="confetti" role="img">
+               🎉
+             </span>
+           </p>
+         </CardBody>
+         <CardFooter className="gap-3">
+           <div className="flex gap-1">
+             <p className="font-semibold text-default-600 text-small">4</p>
+             <p className=" text-default-500 text-small">Following</p>
+           </div>
+           <div className="flex gap-1">
+             <p className="font-semibold text-default-600 text-small">97.1K</p>
+             <p className="text-default-500 text-small">Followers</p>
+           </div>
+         </CardFooter>
+       </Card>
+     );
+   };
+
+//=============================================================================
+const INITIAL_VISIBLE_COLUMNS_CUTI = [
+  "name",
+  "day",
+  "date",
+  "date",
+  "ket",
+  "status",
+  "actions",
+];
+const TableCuti = () => {
+  const [filterValue, setFilterValue] = React.useState("");
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set([])
+  );
+  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+    new Set(INITIAL_VISIBLE_COLUMNS_CUTI)
+  );
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: "nip",
+    direction: "ascending",
+  });
+  const [page, setPage] = React.useState(1);
+
+  const pages = Math.ceil(usersDummy.length / rowsPerPage);
+
+  const hasSearchFilter = Boolean(filterValue);
+
+  const headerColumns = React.useMemo(() => {
+    if (visibleColumns === "all") return tableColumns;
+
+    return tableColumns.filter((tableColumns) =>
+      Array.from(visibleColumns).includes(tableColumns.uid)
+    );
+  }, [visibleColumns]);
+
+  const filteredItems = React.useMemo(() => {
+    let filteredUsers = [...usersDummy];
+
+    if (hasSearchFilter) {
+      filteredUsers = filteredUsers.filter((user) =>
+        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    }
+    if (
+      statusFilter !== "all" &&
+      Array.from(statusFilter).length !== statusOptionsCuti.length
+    ) {
+      filteredUsers = filteredUsers.filter((user) =>
+        Array.from(statusFilter).includes(user.status)
+      );
+    }
+
+    return filteredUsers;
+  }, [filterValue, statusFilter, hasSearchFilter]);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return filteredItems.slice(start, end);
+  }, [page, filteredItems, rowsPerPage]);
+
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a: user, b: user) => {
+      const first = a[sortDescriptor.column as keyof user] as number;
+      const second = b[sortDescriptor.column as keyof user] as number;
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor, items]);
+
+  const renderCell = React.useCallback((user: user, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof user];
+
+    switch (columnKey) {
+      case "name":
+        return (
+          <User
+            classNames={{
+              description: "text-default-500",
+            }}
+            description={user.email}
+            name={cellValue}
+          >
+            {user.email}
+          </User>
+        );
+      case "role":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-500">
+              {user.team}
+            </p>
+          </div>
+        );
+      case "status":
+        return (
+          <Chip
+            className="capitalize border-none gap-1 text-default-600"
+            color={statusColorMap[user.status]}
+            size="sm"
+            variant="dot"
+          >
+            {" "}
+            {cellValue}
+          </Chip>
+        );
+      case "actions":
+        return (
+          <div className="relative flex justify-center items-center gap-2">
+            <Dropdown className="bg-background border-1 border-default-200">
+              <DropdownTrigger>
+                <Button isIconOnly radius="full" size="sm" variant="light">
+                  <Ellipsis className="text-default-400 rotate-90" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="view">Correction</DropdownItem>
+                <DropdownItem key="edit">View Status</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
+  const topContent = React.useMemo(() => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <DateRangePicker
+            showMonthAndYearPickers={true}
+            label="Start Date & End Date"
+            className="w-[20%]"
+            variant="bordered"
+            maxValue={today(getLocalTimeZone())}
+            description="Pilih tanggal absen bulanan"
+          />
+          <div className="flex gap-3">
+            <Tooltip content="Download as Pdf">
+              <Button className="" size="sm" variant="flat">
+                <FileDown size={20} />
+              </Button>
+            </Tooltip>
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  size="sm"
+                  variant="flat"
+                >
+                  Status
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={statusFilter}
+                onSelectionChange={setStatusFilter}
+                selectionMode={"multiple"}
+              >
+                {statusOptionsCuti.map((status) => (
+                  <DropdownItem key={status.uid} className="capitalize">
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {usersDummy.length} users
+          </span>
+          <label className="flex items-center text-default-400 text-small">
+            Rows per page:
+            <select
+              className="bg-transparent outline-none text-default-400 text-small"
+              onChange={onRowsPerPageChange}
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    );
+  }, [statusFilter, onRowsPerPageChange]);
+
+  const bottomContent = React.useMemo(() => {
+    return (
+      <div className="py-2 px-2 flex justify-between items-center">
+        <Pagination
+          showControls
+          classNames={{
+            cursor: "bg-foreground text-background",
+          }}
+          color="default"
+          isDisabled={hasSearchFilter}
+          page={page}
+          total={pages}
+          variant="light"
+          onChange={setPage}
+        />
+        <span className="text-small text-default-400">
+          {selectedKeys === "all"
+            ? "All items selected"
+            : `${selectedKeys.size} of ${items.length} selected`}
+        </span>
+      </div>
+    );
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+
+  const classNames = React.useMemo(
+    () => ({
+      wrapper: ["max-h-content", "max-w-content"],
+      th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+      td: [
+        "group-data-[first=true]/tr:first:before:rounded-none",
+        "group-data-[first=true]/tr:last:before:rounded-none",
+        "group-data-[middle=true]/tr:before:rounded-none",
+        "group-data-[last=true]/tr:first:before:rounded-none",
+        "group-data-[last=true]/tr:last:before:rounded-none",
+      ],
+    }),
+    []
+  );
 
   return (
-    <ButtonGroup variant="flat">
-      <Button>{labelsMap.merge[0]}</Button>
-      <Dropdown placement="bottom-end">
-        <DropdownTrigger>
-          <Button isIconOnly>
-            <ChevronDownIcon />
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu
-          disallowEmptySelection
-          aria-label="Merge options"
-          className="max-w-[300px]"
-          selectedKeys={selectedOption}
-          selectionMode="single"
-        >
-          <DropdownItem key="merge" description={descriptionsMap["merge"]}>
-            {labelsMap["merge"]}
-          </DropdownItem>
-          <DropdownItem key="squash" description={descriptionsMap["squash"]}>
-            {labelsMap["squash"]}
-          </DropdownItem>
-          <DropdownItem key="rebase" description={descriptionsMap["rebase"]}>
-            {labelsMap["rebase"]}
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </ButtonGroup>
+    <Table
+      isCompact
+      removeWrapper
+      aria-label="Example table with custom cells, pagination and sorting"
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
+      checkboxesProps={{
+        classNames: {
+          wrapper:
+            "flex-col relative box-sizing:border-box overflow: hidden display: inline-block after:bg-foreground after:text-background text-background",
+        },
+      }}
+      classNames={classNames}
+      selectedKeys={selectedKeys}
+      selectionMode="multiple"
+      sortDescriptor={sortDescriptor}
+      topContent={topContent}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No users found"} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.nip}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };
+const TableLembur = () => {
+  const [filterValue, setFilterValue] = React.useState("");
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set([])
+  );
+  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+    new Set(INITIAL_VISIBLE_COLUMNS_CUTI)
+  );
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: "nip",
+    direction: "ascending",
+  });
+  const [page, setPage] = React.useState(1);
 
+  const pages = Math.ceil(usersDummy.length / rowsPerPage);
+
+  const hasSearchFilter = Boolean(filterValue);
+
+  const headerColumns = React.useMemo(() => {
+    if (visibleColumns === "all") return tableColumns;
+
+    return tableColumns.filter((tableColumns) =>
+      Array.from(visibleColumns).includes(tableColumns.uid)
+    );
+  }, [visibleColumns]);
+
+  const filteredItems = React.useMemo(() => {
+    let filteredUsers = [...usersDummy];
+
+    if (hasSearchFilter) {
+      filteredUsers = filteredUsers.filter((user) =>
+        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    }
+    if (
+      statusFilter !== "all" &&
+      Array.from(statusFilter).length !== statusOptionsCuti.length
+    ) {
+      filteredUsers = filteredUsers.filter((user) =>
+        Array.from(statusFilter).includes(user.status)
+      );
+    }
+
+    return filteredUsers;
+  }, [filterValue, statusFilter, hasSearchFilter]);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return filteredItems.slice(start, end);
+  }, [page, filteredItems, rowsPerPage]);
+
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a: user, b: user) => {
+      const first = a[sortDescriptor.column as keyof user] as number;
+      const second = b[sortDescriptor.column as keyof user] as number;
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [sortDescriptor, items]);
+
+  const renderCell = React.useCallback((user: user, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof user];
+
+    switch (columnKey) {
+      case "name":
+        return (
+          <User
+            classNames={{
+              description: "text-default-500",
+            }}
+            description={user.email}
+            name={cellValue}
+          >
+            {user.email}
+          </User>
+        );
+      case "role":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-500">
+              {user.team}
+            </p>
+          </div>
+        );
+      case "status":
+        return (
+          <Chip
+            className="capitalize border-none gap-1 text-default-600"
+            color={statusColorMap[user.status]}
+            size="sm"
+            variant="dot"
+          >
+            {" "}
+            {cellValue}
+          </Chip>
+        );
+      case "actions":
+        return (
+          <div className="relative flex justify-center items-center gap-2">
+            <Dropdown className="bg-background border-1 border-default-200">
+              <DropdownTrigger>
+                <Button isIconOnly radius="full" size="sm" variant="light">
+                  <Ellipsis className="text-default-400 rotate-90" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="view">Correction</DropdownItem>
+                <DropdownItem key="edit">View Status</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
+  const topContent = React.useMemo(() => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <DateRangePicker
+          showMonthAndYearPickers
+            label="Start Date & End Date"
+            className="w-[20%]"
+            variant="bordered"
+            maxValue={today(getLocalTimeZone())}
+            description="Pilih tanggal absen bulanan"
+          />
+
+          <div className="flex gap-3">
+            <Tooltip content="Download as Pdf">
+              <Button className="" size="sm" variant="flat">
+                <FileDown size={20} />
+              </Button>
+            </Tooltip>
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  size="sm"
+                  variant="flat"
+                >
+                  Status
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={statusFilter}
+                onSelectionChange={setStatusFilter}
+                selectionMode={"multiple"}
+              >
+                {statusOptionsCuti.map((status) => (
+                  <DropdownItem key={status.uid} className="capitalize">
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+              <Button
+                size="sm"
+                variant="flat"
+                endContent={<PlusIcon/>}
+                className="bg-foreground text-background"
+              >
+                Tambah
+              </Button>
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {usersDummy.length} users
+          </span>
+          <label className="flex items-center text-default-400 text-small">
+            Rows per page:
+            <select
+              className="bg-transparent outline-none text-default-400 text-small"
+              onChange={onRowsPerPageChange}
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    );
+  }, [statusFilter, onRowsPerPageChange]);
+
+  const bottomContent = React.useMemo(() => {
+    return (
+      <div className="py-2 px-2 flex justify-between items-center">
+        <Pagination
+          showControls
+          classNames={{
+            cursor: "bg-foreground text-background",
+          }}
+          color="default"
+          isDisabled={hasSearchFilter}
+          page={page}
+          total={pages}
+          variant="light"
+          onChange={setPage}
+        />
+        <span className="text-small text-default-400">
+          {selectedKeys === "all"
+            ? "All items selected"
+            : `${selectedKeys.size} of ${items.length} selected`}
+        </span>
+      </div>
+    );
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+
+  const classNames = React.useMemo(
+    () => ({
+      wrapper: ["max-h-content", "max-w-content"],
+      th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+      td: [
+        "group-data-[first=true]/tr:first:before:rounded-none",
+        "group-data-[first=true]/tr:last:before:rounded-none",
+        "group-data-[middle=true]/tr:before:rounded-none",
+        "group-data-[last=true]/tr:first:before:rounded-none",
+        "group-data-[last=true]/tr:last:before:rounded-none",
+      ],
+    }),
+    []
+  );
+
+  return (
+    <Table
+      isCompact
+      removeWrapper
+      aria-label="Example table with custom cells, pagination and sorting"
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
+      checkboxesProps={{
+        classNames: {
+          wrapper:
+            "flex-col relative box-sizing:border-box overflow: hidden display: inline-block after:bg-foreground after:text-background text-background",
+        },
+      }}
+      classNames={classNames}
+      selectedKeys={selectedKeys}
+      selectionMode="multiple"
+      sortDescriptor={sortDescriptor}
+      topContent={topContent}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No users found"} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.nip}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+};
+//Button triger
+const BtnCuti = () => {};
+
+//Modal kirim message, belum di panggil
 const ModalMessage = () => {
   const [messageSend, diretTo] = React.useState(false);
   const item = usersDummy[0];
@@ -607,7 +1177,6 @@ const PopMesssage = () => {
     </Popover>
   );
 };
-
 // Modal Form Untuk Pengajuan Cuti
 const ModalCuti = () => {
   const [isSelected, setIsSelected] = React.useState(false);
@@ -945,11 +1514,16 @@ const ModalLembur = () => {
 };
 
 export {
+  CorectionIcon,
+  CorectionCard,
   ActiviyPageComp,
-  TableActivity,
+  TableAbsensi,
+  TableCuti,
+  TableLembur,
   ModalMessage,
   PopMesssage,
   ModalCuti,
   ModalLembur,
-  BtnActivity,
+  // BtnAbsensi,
+  BtnCuti,
 };

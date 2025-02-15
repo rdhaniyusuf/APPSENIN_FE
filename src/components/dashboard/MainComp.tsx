@@ -191,7 +191,6 @@ const BottomTable = () => {
 
   const renderCell = React.useCallback((user: user, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof user];
-
     switch (columnKey) {
       case "name":
         return (
@@ -224,23 +223,6 @@ const BottomTable = () => {
           >
             {cellValue}
           </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <Ellipsis className="text-default-400 rotate-90" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
         );
       default:
         return cellValue;
@@ -299,6 +281,7 @@ const BottomTable = () => {
                 closeOnSelect={false}
                 selectedKeys={statusFilter}
                 onSelectionChange={setStatusFilter}
+                selectionMode={"multiple"}
               >
                 {statusOptions.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
@@ -332,13 +315,6 @@ const BottomTable = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-foreground text-background"
-              endContent={<PlusIcon />}
-              size="sm"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -796,7 +772,7 @@ const PopMesssage = () => {
           radius="full"
           size="sm"
         >
-          <Tooltip content="">
+          <Tooltip content="View">
             <UserRoundPen className="text-default-400" />
           </Tooltip>
         </Button>
@@ -1163,7 +1139,7 @@ const ModalApprovalCuti = () => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onPress={onClose}>
+                <Chip color="danger" variant="flat">
                   Reject
                 </Chip>
                 <label {...getBaseProps()}>
