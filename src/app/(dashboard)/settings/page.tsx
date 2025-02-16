@@ -1,31 +1,19 @@
-'use client';
-import { Tabs, Tab, Card, CardBody } from "@heroui/react";
+import { GeneralSetComp } from "@/components/dashboard/settings/SettingsComp";
+import React from "react";
 
-export default function SettingsPage() {
-    return (
-        <div className="flex w-full flex-col">
-            <Tabs aria-label="Disabled Options" variant="underlined">
-                <Tab key="photos" title="Photos">
-                    
-                </Tab>
-                <Tab key="music" title="Music">
-                    <Card>
-                        <CardBody>
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur.
-                        </CardBody>
-                    </Card>
-                </Tab>
-                <Tab key="videos" title="Videos">
-                    <Card>
-                        <CardBody>
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            mollit anim id est laborum.
-                        </CardBody>
-                    </Card>
-                </Tab>
-            </Tabs>
+const PresencePage: React.FC = () => {
+  return (
+    <div>
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6 max-h-screen">
+        <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
+          Pengaturan Umum
+        </h3>
+        <div className="space-y-6 gap-3">
+          <GeneralSetComp />
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
+
+export default PresencePage;

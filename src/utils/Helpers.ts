@@ -11,6 +11,17 @@ const menuItems = [
   { name: "Help & Feedback", icon: HelpCircle, href: "/help" },
 ];
 
+const subItems = [
+  { name: "Profil",  href: "/presence" },
+  { name: "Security",  href: "/presence" },
+  { name: "Application", href: "/presence" },
+  { name: "Team Member",  href: "/presence" },
+  { name: "Notifikasi",  href: "/presence" },
+  { name: "Data Eksport",  href: "/presence" },
+  { name: "Version", href: "/presence" }, 
+];
+
+
 const topCardList = [
   {
     title: "Absence",
@@ -53,9 +64,11 @@ const tableColumns = [
   {name: "EMAIL", uid: "email"},
   {name: "HARI", uid: "day"},
   {name: "WAKTU", uid: "time"},
-  {name: "TANGGAL ", uid: "date"},
-  {name: "TIME START", uid: "time1", sortable: true},
-  {name: "TIME END", uid: "time2", sortable: true},
+  {name: "TANGGAL", uid: "date"},
+  {name: "TANGGAL AWAL ", uid: "date1"},
+  {name: "TANGGAL AKHIR ", uid: "date2"},
+  {name: "JAM AWAL", uid: "time1", sortable: true},
+  {name: "JAM AKHIR", uid: "time2", sortable: true},
   {name: "CLOCK IN", uid: "clockIn", sortable: true},
   {name: "CLOCK OUT", uid: "clockOut", sortable: true},
   {name: "KETERANGAN", uid: "keterangan"},
@@ -326,4 +339,5 @@ export {
   statusOptionsCuti,
   usersDummy,
   columnAct,
+  subItems,
 };

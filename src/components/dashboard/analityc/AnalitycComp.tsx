@@ -838,15 +838,7 @@ const TableLembur = () => {
           />
 
           <div className="flex gap-3">
-            <Button
-              isIconOnly
-              size="sm"
-              variant="flat"
-              endContent={<PlusIcon />}
-              className="bg-foreground text-background"
-            >
-              <ModalLembur />
-            </Button>
+            {/* <ModalLembur /> */}
             <Tooltip content="Unduh Pdf">
               <Button className="" size="sm" variant="flat" isIconOnly>
                 <FileDown size={20} />
@@ -1029,18 +1021,18 @@ const ModalLembur = () => {
   );
   return (
     <>
-      <Button
-        className="border-none"
-        color="secondary"
-        variant="light"
-        radius="full"
-        onPress={onOpen}
-        size="sm"
-      >
-        <Tooltip content="Tambah Lembur">
+      <Tooltip content="Tambah Lembur">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="flat"
+          className="bg-foreground text-background"
+          color="secondary"
+          onPress={onOpen}
+        >
           <FilePen className="text-default-400" size={17} />
-        </Tooltip>
-      </Button>
+        </Button>
+      </Tooltip>
       <Modal
         itemProp="User Testing"
         isOpen={isOpen}
@@ -1190,11 +1182,4 @@ const ModalLembur = () => {
     </>
   );
 };
-export {
-  AnalitycPageComp,
-  TableAbsensi,
-  TableCuti,
-  TableLembur,
-  ModalLembur,
-  // BtnAbsensi,
-};
+export { AnalitycPageComp, TableAbsensi, TableCuti, TableLembur, ModalLembur };

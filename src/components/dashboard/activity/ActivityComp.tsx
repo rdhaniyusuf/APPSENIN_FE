@@ -81,8 +81,6 @@ import {
   FilePlus2,
 } from "lucide-react";
 import React, { SVGProps, useEffect, useState } from "react";
-import { on } from "events";
-import { getUser } from "@/utils/Auth";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -163,8 +161,8 @@ const INITIAL_VISIBLE_COLUMNS_ABSENSI = [
   "clockIn",
   "clockOut",
   "keterangan",
-  "status",
   "koreksi",
+  "status",
 ];
 //Table Utama activity
 const TableAbsensi = () => {
@@ -432,10 +430,8 @@ const TableAbsensi = () => {
 //=============================================================================
 const INITIAL_VISIBLE_COLUMNS_CUTI = [
   "name",
-  "day",
-  "schedule",
-  "date",
-  "time",
+  "date1",
+  "date2",
   "ket",
   "keterangan",
   "status",
@@ -840,15 +836,15 @@ const TableLembur = () => {
           />
 
           <div className="flex gap-3">
-            <Button
+            {/* <Button
               isIconOnly
               size="sm"
               variant="flat"
               endContent={<PlusIcon />}
               className="bg-foreground text-background"
-            >
-              <ModalLembur />
-            </Button>
+            > */}
+            <ModalLembur />
+            {/* </Button> */}
             <Tooltip content="Unduh Pdf">
               <Button className="" size="sm" variant="flat" isIconOnly>
                 <FileDown size={20} />
@@ -1031,18 +1027,18 @@ const ModalLembur = () => {
   );
   return (
     <>
-      <Button
-        className="border-none"
-        color="secondary"
-        variant="light"
-        radius="full"
-        onPress={onOpen}
-        size="sm"
-      >
-        <Tooltip content="Tambah Lembur">
+      <Tooltip content="Tambah Lembur">
+        <Button
+          isIconOnly
+          size="sm"
+          variant="flat"
+          className="bg-foreground text-background"
+          color="secondary"
+          onPress={onOpen}
+        >
           <FilePen className="text-default-400" size={17} />
-        </Tooltip>
-      </Button>
+        </Button>
+      </Tooltip>
       <Modal
         itemProp="User Testing"
         isOpen={isOpen}
@@ -1154,14 +1150,14 @@ const ModalLembur = () => {
                             onValueChange={setIsSelected}
                           ></Checkbox>
                         </Tooltip>
-                        <p className="text-default-500">TTD Lembur</p>
+                        <p className="text-default-500">TTD Pengajuan Lembur</p>
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Chip color="danger" variant="flat" onclose={onClose}>
+                <Chip color="danger" variant="flat" onClose={onClose}>
                   Batalkan
                 </Chip>
                 <label {...getBaseProps()}>
@@ -1181,7 +1177,7 @@ const ModalLembur = () => {
                     variant="faded"
                     {...getLabelProps()}
                   >
-                    {children ? children : isSelected ? "Ajukan" : "TTD"}
+                    {children ? children : isSelected ? "Kirim" : "TTD"}
                   </Chip>
                 </label>
               </ModalFooter>
@@ -1198,5 +1194,4 @@ export {
   TableCuti,
   TableLembur,
   ModalLembur,
-  // BtnAbsensi,
 };
