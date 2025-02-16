@@ -24,12 +24,11 @@ const GeneralSetComp = () => {
   );
 };
 
-
 interface TabsProps {
   onMenuClick?: (path: string) => void;
 }
 const NavSetComp: FC<TabsProps> = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
   return (
     <div className="flex mt-5 flex-col px-4 max-h-max gap-3">
@@ -40,8 +39,7 @@ const NavSetComp: FC<TabsProps> = () => {
         variant="light"
       >
         {subItems.map((item, index) => (
-          <Tab key={item.name} title={item.name}
-          href={pathname}></Tab>
+          <Tab key={item.name} title={item.name}></Tab>
         ))}
       </Tabs>
     </div>
