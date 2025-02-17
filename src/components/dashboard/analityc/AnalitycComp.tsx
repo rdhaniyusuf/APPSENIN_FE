@@ -79,6 +79,7 @@ import {
   ChevronDownIcon,
   FileDown,
   FilePlus2,
+  SearchIcon,
 } from "lucide-react";
 import React, { SVGProps, useEffect, useState } from "react";
 
@@ -278,6 +279,14 @@ const TableAbsensi = () => {
     },
     []
   );
+   const onSearchChange = React.useCallback((value?: string) => {
+     if (value) {
+       setFilterValue(value);
+       setPage(1);
+     } else {
+       setFilterValue("");
+     }
+   }, []);
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -323,6 +332,20 @@ const TableAbsensi = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            <Input
+              isClearable
+              classNames={{
+                base: "w-full",
+                inputWrapper: "border-1",
+              }}
+              placeholder="Search by name..."
+              size="sm"
+              startContent={<SearchIcon className="text-default-300" />}
+              value={filterValue}
+              variant="flat"
+              onClear={() => setFilterValue("")}
+              onValueChange={onSearchChange}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -343,7 +366,7 @@ const TableAbsensi = () => {
         </div>
       </div>
     );
-  }, [statusFilter, onRowsPerPageChange]);
+  }, [statusFilter, onRowsPerPageChange, filterValue, onSearchChange]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -502,6 +525,7 @@ const TableCuti = () => {
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
+  
 
   const renderCell = React.useCallback((user: user, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof user];
@@ -552,6 +576,15 @@ const TableCuti = () => {
     },
     []
   );
+   const onSearchChange = React.useCallback((value?: string) => {
+     if (value) {
+       setFilterValue(value);
+       setPage(1);
+     } else {
+       setFilterValue("");
+     }
+   }, []);
+  
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -595,6 +628,20 @@ const TableCuti = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            <Input
+              isClearable
+              classNames={{
+                base: "w-full",
+                inputWrapper: "border-1",
+              }}
+              placeholder="Search by name..."
+              size="sm"
+              startContent={<SearchIcon className="text-default-300" />}
+              value={filterValue}
+              variant="flat"
+              onClear={() => setFilterValue("")}
+              onValueChange={onSearchChange}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -615,7 +662,7 @@ const TableCuti = () => {
         </div>
       </div>
     );
-  }, [statusFilter, onRowsPerPageChange]);
+  }, [statusFilter, filterValue, onSearchChange, onRowsPerPageChange]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -824,6 +871,15 @@ const TableLembur = () => {
     },
     []
   );
+
+    const onSearchChange = React.useCallback((value?: string) => {
+      if (value) {
+        setFilterValue(value);
+        setPage(1);
+      } else {
+        setFilterValue("");
+      }
+    }, []);
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -869,6 +925,20 @@ const TableLembur = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            <Input
+              isClearable
+              classNames={{
+                base: "w-full",
+                inputWrapper: "border-1",
+              }}
+              placeholder="Search by name..."
+              size="sm"
+              startContent={<SearchIcon className="text-default-300" />}
+              value={filterValue}
+              variant="flat"
+              onClear={() => setFilterValue("")}
+              onValueChange={onSearchChange}
+            />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -889,7 +959,7 @@ const TableLembur = () => {
         </div>
       </div>
     );
-  }, [statusFilter, onRowsPerPageChange]);
+  }, [statusFilter, filterValue, onSearchChange, onRowsPerPageChange]);
 
   const bottomContent = React.useMemo(() => {
     return (

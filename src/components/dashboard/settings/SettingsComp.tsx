@@ -13,8 +13,8 @@ import {
 import { Component, Route } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Router } from "next/router";
-import React, { FC, useCallback, useState } from "react";
+import { Router, useRouter } from "next/router";
+import React, { FC, useCallback, useRef, useState } from "react";
 
 const GeneralSetComp = () => {
   return (
@@ -42,9 +42,25 @@ const NavSetComp: FC<TabsProps> = () => {
           <Tab key={item.name} title={item.name}></Tab>
         ))}
       </Tabs>
+        
     </div>
   );
 };
+
+// const IpnutSearch = () => {
+//     const searchRef = useRef();
+//     const router = useRouter();
+
+//     const handleSearch = (event) => {
+//         if(event.key === "Enter"){
+//             event.preventDefault()
+//             const keyword = searchRef.current.value
+//             router.push(`${keyword}`)
+//         }
+//     }
+
+// }
+
 
 const SetProfileComp = () => {
   return (
